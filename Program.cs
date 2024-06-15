@@ -46,7 +46,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ICuponService, CuponService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IMarketingUserService, MarketingUserService>();
 builder.Services.AddScoped<IMarketplaceUserService, MarketplaceUserService>();
