@@ -1,4 +1,5 @@
 // Import the namespace where the CouponEntity class is defined.
+using Coupons.Dto;
 using Coupons.Models;
 
 // Namespace where the ICouponService interface is defined.
@@ -17,7 +18,7 @@ namespace Coupons
         // Task<ICollection<CouponEntity>> GetCouponHistory(int id);
 
         // // Asynchronous method that returns a task completed with the created coupon entity.
-        // Task<CouponEntity> CreateCoupon(CouponEntity coupon);
+        Task<CouponEntity> CreateCoupon(CouponsDto coupon);
 
         // // Asynchronous method that returns a task completed with the restored coupon entity based on an ID and an updated coupon entity.
         // Task<CouponEntity> RestoreCoupon(int id, CouponEntity updatedCoupon);
