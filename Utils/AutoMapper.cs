@@ -1,4 +1,5 @@
 using AutoMapper;
+using Coupons.Models;
 
 namespace SolutionVets.Utils
 {
@@ -6,6 +7,7 @@ namespace SolutionVets.Utils
     {
         public MappingProfile()
         {
+            CreateMap<CouponEntity ,CouponEntityUserDTO>();
 
         }
     }
