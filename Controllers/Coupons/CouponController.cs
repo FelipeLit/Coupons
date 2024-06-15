@@ -88,11 +88,29 @@ namespace Coupons
         //     return Ok(coupons);
         // }
 
+        // This defines a GET endpoint at "api/coupon-usages".
         [HttpGet, Route("api/coupon-usages")]
         public async Task<IActionResult> GetUsersWithCouponsAsync()
         {
-            var coupons = await _service.GetUsersWithCouponsAsync();
-            return Ok(coupons);
+            try 
+            {
+                // Call the service to get users with their coupons.
+                var coupons = await _service.GetUsersWithCouponsAsync();
+
+                // Check if the coupons list is null or empty
+                if (coupons == null || coupons.Count == 0)
+                {
+                    // Return a 404 Not Found response with a message
+                    return NotFound(new { Message = "404 No coupons found in the database.", CurrentDate = DateTime.Now });
+                }
+                // Return the result as a 200 OK response.
+                return Ok(coupons);        
+            } 
+            catch (Exception ex) 
+            {
+                // Return a 500 Internal Server Error response with a message
+                return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now,  Error = ex.Message });
+            }
         }
     }
 }
