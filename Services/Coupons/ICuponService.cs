@@ -13,7 +13,5 @@ namespace Coupons
         // Asynchronous method that returns a task completed with a coupon entity based on the provided ID.
         Task<CouponEntityUserDTO> GetCouponById(int id);
 
-        // // Asynchronous method that returns a task completed with a collection of historical coupon entities based on an ID.
-        // Task<ICollection<CouponEntity>> GetCouponHistory(int id);
     }
 }
