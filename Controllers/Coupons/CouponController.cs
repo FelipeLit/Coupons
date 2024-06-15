@@ -32,10 +32,10 @@ namespace Coupons
                 // Return a 200 OK response with the list of coupons
                 return Ok(coupons);
             } 
-            catch (Exception) 
+            catch (Exception ex) 
             {
                 // Return a 500 Internal Server Error response with a message
-                return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now });
+                return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now,  Error = ex.Message });
             }
         }
 

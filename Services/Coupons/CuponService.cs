@@ -53,7 +53,7 @@ namespace Coupons
 
                 return coupon;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("An error occurred while creating the coupon. Please try again later.");
             }
@@ -70,12 +70,43 @@ namespace Coupons
 
         public async Task<CouponEntityUserDTO> GetCouponById(int id)
         {
-             var coupons = await _context.Coupons.FindAsync(id);
+            // Find the coupon by ID
+            var coupons = await _context.Coupons.FindAsync(id);
 
+            // Return the coupon entity user DTO.
             return _mapper.Map<CouponEntityUserDTO>(coupons);
         }
 
 
+
+        public async Task<bool> UpdateCoupon(int id, CouponEntityUserDTO couponEntityUserDTO)
+        {
+            // Find the coupon by ID
+            var couponSearch = await _context.Coupons.FindAsync(id);
+
+            // If coupon not found, return false
+            if (couponSearch == null)
+            {
+                return false;
+            }
+
+            // Update coupon properties
+            couponSearch.Name = couponEntityUserDTO.Name;
+            couponSearch.Description = couponEntityUserDTO.Description;
+            couponSearch.StartDate = couponEntityUserDTO.StartDate;
+            couponSearch.EndDate = couponEntityUserDTO.EndDate;
+            couponSearch.DiscountType = couponEntityUserDTO.DiscountType;
+            couponSearch.IsLimited = couponEntityUserDTO.IsLimited;
+            couponSearch.UsageLimit = couponEntityUserDTO.UsageLimit;
+            couponSearch.AmountUses = couponEntityUserDTO.AmountUses;
+            couponSearch.MinPurchaseAmount = couponEntityUserDTO.MinPurchaseAmount;
+            couponSearch.MaxPurchaseAmount = couponEntityUserDTO.MaxPurchaseAmount;
+            couponSearch.Status = couponEntityUserDTO.Status;
+            couponSearch.MarketingUserId = couponEntityUserDTO.MarketingUserId;
+            
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 
 }
