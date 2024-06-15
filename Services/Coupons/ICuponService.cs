@@ -24,5 +24,8 @@ namespace Coupons
         //View All  coupons remove
         Task<ICollection<CouponEntityUserDTO>> GetAllCouponsRemove();
 
+        //PURCHASECOUPONS see all buys and coupons asociate
+        Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased();
+
     }
 }
