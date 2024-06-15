@@ -81,8 +81,8 @@ namespace Coupons
         {
             // Fetch users with their coupon usages from the database, including coupon details.
             var usersWithCoupons = await _context.MarketplaceUsers
-                .Include(mu => mu.CouponUsages)
-                .ThenInclude(cu => cu.Coupon)
+                .Include(mu => mu.CouponUsages!)
+                .ThenInclude(cu => cu.Coupon!)
                 .ToListAsync();
 
             // Map the result to a collection of MarketplaceForUserDTO and return it.
