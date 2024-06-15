@@ -9,7 +9,8 @@ namespace SolutionVets.Utils
         {
             CreateMap<CouponEntity, CouponForUserDTO>();
             CreateMap<MarketplaceUserEntity, MarketplaceForUserDTO>();
-             CreateMap<CouponUsageEntity, CouponUsageForCouponsDTO>();
+            CreateMap<MarketingUserEntity, MarketingForLoginDTO>();
+            CreateMap<CouponUsageEntity, CouponUsageForCouponsDTO>();
 
         }
     }

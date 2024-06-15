@@ -123,6 +123,7 @@ namespace Coupons
             couponSearch.Status = couponForUserDTO.Status;
             couponSearch.MarketingUserId = couponForUserDTO.MarketingUserId;
             
+            // Save changes to the database
             await _context.SaveChangesAsync();
             return true;
         }
