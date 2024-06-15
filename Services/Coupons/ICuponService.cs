@@ -9,17 +9,19 @@ namespace Coupons
     public interface ICouponService
     {
         // Asynchronous method that returns a task completed with a collection of coupon entities.
-        Task<ICollection<CouponEntityUserDTO>> GetAllCoupons();
+        Task<ICollection<CouponForUserDTO>> GetAllCoupons();
 
         // Asynchronous method that returns a task completed with a coupon entity based on the provided ID.
-        Task<CouponEntityUserDTO> GetCouponById(int id);
+        Task<CouponForUserDTO> GetCouponById(int id);
 
         // Asynchronous method that returns a task completed with the created coupon entity.
         Task<CouponEntity> CreateCoupon(CouponsDto coupon);
         
         // Asynchronous method that returns a task completed with a boolean value indicating if the coupon update based on an ID was successful.
-        Task<bool> UpdateCoupon(int id, CouponEntityUserDTO couponEntityUserDTO);
+        Task<bool> UpdateCoupon(int id, CouponForUserDTO couponForUserDTO);
         
-
+        // Asynchronous method that returns a task completed with the list of coupons created by a certain user (CUPONES CREADOS POR UNO DE MARKETING).
+        Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId);
+        Task<ICollection<MarketplaceForUserDTO>> GetUsersWithCouponsAsync();
     }
 }

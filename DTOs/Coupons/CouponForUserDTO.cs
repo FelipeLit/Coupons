@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Coupons.Models
 {
-    public class CouponEntityUserDTO
+    public class CouponForUserDTO
     {
         // ID is required. Should throw an error if not provided or if already exists during update
         [Required(ErrorMessage = "ID is required.")]

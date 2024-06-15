@@ -60,26 +60,45 @@ namespace Coupons
         }
 
         // Asynchronous method to retrieve all coupons
-        public async Task<ICollection<CouponEntityUserDTO>> GetAllCoupons()
+        public async Task<ICollection<CouponForUserDTO>> GetAllCoupons()
         {
             var coupons = await _context.Coupons.ToListAsync();
 
             // Returns a list of all coupons from the database
-            return _mapper.Map<ICollection<CouponEntityUserDTO>>(coupons);
+            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);
         }
 
-        public async Task<CouponEntityUserDTO> GetCouponById(int id)
+        public async Task<CouponForUserDTO> GetCouponById(int id)
         {
             // Find the coupon by ID
             var coupons = await _context.Coupons.FindAsync(id);
 
             // Return the coupon entity user DTO.
-            return _mapper.Map<CouponEntityUserDTO>(coupons);
+            return _mapper.Map<CouponForUserDTO>(coupons);
         }
 
+        public async Task<ICollection<MarketplaceForUserDTO>> GetUsersWithCouponsAsync()
+        {
+            var usersWithCoupons = await _context.MarketplaceUsers
+                .Include(mu => mu.CouponUsages)
+                .ThenInclude(cu => cu.Coupon)
+                .ToListAsync();
 
+            return _mapper.Map<ICollection<MarketplaceForUserDTO>>(usersWithCoupons); 
+        
+        }
 
-        public async Task<bool> UpdateCoupon(int id, CouponEntityUserDTO couponEntityUserDTO)
+        public async Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId)
+        {
+            // Return coupons whose creator has the provided ID
+            var coupons = await _context.Coupons.Where(c => c.MarketingUserId == marketplaceId).ToListAsync() ?? throw new Exception("Cannot find coupon with ID: " + marketplaceId);   
+
+            // Return coupons whose creator  
+            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);   
+        }
+        
+
+        public async Task<bool> UpdateCoupon(int id, CouponForUserDTO couponForUserDTO)
         {
             // Find the coupon by ID
             var couponSearch = await _context.Coupons.FindAsync(id);
@@ -91,18 +110,18 @@ namespace Coupons
             }
 
             // Update coupon properties
-            couponSearch.Name = couponEntityUserDTO.Name;
-            couponSearch.Description = couponEntityUserDTO.Description;
-            couponSearch.StartDate = couponEntityUserDTO.StartDate;
-            couponSearch.EndDate = couponEntityUserDTO.EndDate;
-            couponSearch.DiscountType = couponEntityUserDTO.DiscountType;
-            couponSearch.IsLimited = couponEntityUserDTO.IsLimited;
-            couponSearch.UsageLimit = couponEntityUserDTO.UsageLimit;
-            couponSearch.AmountUses = couponEntityUserDTO.AmountUses;
-            couponSearch.MinPurchaseAmount = couponEntityUserDTO.MinPurchaseAmount;
-            couponSearch.MaxPurchaseAmount = couponEntityUserDTO.MaxPurchaseAmount;
-            couponSearch.Status = couponEntityUserDTO.Status;
-            couponSearch.MarketingUserId = couponEntityUserDTO.MarketingUserId;
+            couponSearch.Name = couponForUserDTO.Name;
+            couponSearch.Description = couponForUserDTO.Description;
+            couponSearch.StartDate = couponForUserDTO.StartDate;
+            couponSearch.EndDate = couponForUserDTO.EndDate;
+            couponSearch.DiscountType = couponForUserDTO.DiscountType;
+            couponSearch.IsLimited = couponForUserDTO.IsLimited;
+            couponSearch.UsageLimit = couponForUserDTO.UsageLimit;
+            couponSearch.AmountUses = couponForUserDTO.AmountUses;
+            couponSearch.MinPurchaseAmount = couponForUserDTO.MinPurchaseAmount;
+            couponSearch.MaxPurchaseAmount = couponForUserDTO.MaxPurchaseAmount;
+            couponSearch.Status = couponForUserDTO.Status;
+            couponSearch.MarketingUserId = couponForUserDTO.MarketingUserId;
             
             await _context.SaveChangesAsync();
             return true;

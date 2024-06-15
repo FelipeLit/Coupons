@@ -16,7 +16,7 @@ namespace Coupons
 
          // Endpoint to update a coupon
         [HttpPut("api/coupons/update/{id}")]
-        public async Task<IActionResult> UpdateCoupon(int id, [FromBody] CouponEntityUserDTO couponEntityUserDTO)
+        public async Task<IActionResult> UpdateCoupon(int id, [FromBody] CouponForUserDTO couponForUserDTO)
         {
             // Validate that the model is valid
             if (!ModelState.IsValid)
@@ -33,7 +33,7 @@ namespace Coupons
             try
             {
                 // Try to update the coupon
-                var result = await _service.UpdateCoupon(id, couponEntityUserDTO);
+                var result = await _service.UpdateCoupon(id, couponForUserDTO);
                 
                 if (!result)
                 {

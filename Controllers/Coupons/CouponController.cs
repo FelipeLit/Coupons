@@ -71,5 +71,28 @@ namespace Coupons
                 return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now });
             }
         }
+
+        // Method to obtain the coupons created by the authenticated marketing
+        // [HttpGet, Route("api/mycoupons")]
+        // public IActionResult GetMyCoupons()
+        // {
+        //     var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        //     if (userIdClaim == null)
+        //     {
+        //         return Unauthorized("No se pudo obtener la información del usuario.");
+        //     }
+
+        //     var userId = int.Parse(userIdClaim);
+        //     var coupons = _service.GetCreatedCoupons(userId);
+        //     return Ok(coupons);
+        // }
+
+        [HttpGet, Route("api/coupon-usages")]
+        public async Task<IActionResult> GetUsersWithCouponsAsync()
+        {
+            var coupons = await _service.GetUsersWithCouponsAsync();
+            return Ok(coupons);
+        }
     }
 }
