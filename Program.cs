@@ -1,9 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Coupons.Services.Auth;
-using Coupons;
 using Coupons.Data;
-using Coupons.Services.Auth;
 using Coupons.Services.Emails;
 using Coupons.Services.MarketingUsers;
 using Coupons.Services.MarketplaceUsers;
@@ -13,6 +11,7 @@ using Coupons.Services.Roles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Coupons;
 
 // We create a WebApplicationBuilder object, which will help us configure and build our web application
 var builder = WebApplication.CreateBuilder(args);

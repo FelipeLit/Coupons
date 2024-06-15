@@ -27,7 +27,7 @@ namespace Coupons
             // Check if id is valid
             if (id <= 0)
             {
-                return BadRequest(new { Message = "Invalid coupon ID. ID must be greater than zero." });
+                return BadRequest(new { Message = "Invalid coupon ID. ID must be greater than zero.", StatusCode = 400 });
             }
 
             try
@@ -37,15 +37,15 @@ namespace Coupons
                 
                 if (!result)
                 {
-                    return NotFound(new { Message = $"Coupon with ID {id} not found." });
+                    return NotFound(new { Message = $"Coupon with ID {id} not found.", StatusCode = 404, });
                 }
 
-                return Ok(new { Message = "Coupon updated successfully." });
+                return Ok(new { Message = "Coupon updated successfully.", StatusCode = 200});
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it as needed
-                return BadRequest(new { Message = "500 An error occurred while updating the coupon.", Error = ex.Message });
+                return BadRequest(new { Message = "An error occurred while updating the coupon.", StatusCode = 500, CurrentDate = DateTime.Now, Error = ex.Message });
             }
         }
 

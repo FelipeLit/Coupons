@@ -108,20 +108,15 @@ namespace Coupons
             {
                 return false;
             }
+            var couponMarketingUserId = _context.MarketingUsers.Any(c => c.Id == couponForUserDTO.MarketingUserId);
+
+            if (!couponMarketingUserId)
+            {
+               throw new Exception("The ID marketing user not found.");
+            }
 
             // Update coupon properties
-            couponSearch.Name = couponForUserDTO.Name;
-            couponSearch.Description = couponForUserDTO.Description;
-            couponSearch.StartDate = couponForUserDTO.StartDate;
-            couponSearch.EndDate = couponForUserDTO.EndDate;
-            couponSearch.DiscountType = couponForUserDTO.DiscountType;
-            couponSearch.IsLimited = couponForUserDTO.IsLimited;
-            couponSearch.UsageLimit = couponForUserDTO.UsageLimit;
-            couponSearch.AmountUses = couponForUserDTO.AmountUses;
-            couponSearch.MinPurchaseAmount = couponForUserDTO.MinPurchaseAmount;
-            couponSearch.MaxPurchaseAmount = couponForUserDTO.MaxPurchaseAmount;
-            couponSearch.Status = couponForUserDTO.Status;
-            couponSearch.MarketingUserId = couponForUserDTO.MarketingUserId;
+            _mapper.Map(couponForUserDTO, couponSearch);
             
             // Save changes to the database
             await _context.SaveChangesAsync();
