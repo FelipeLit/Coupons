@@ -27,7 +27,7 @@ namespace Coupons
                 return BadRequest(new { Message = "500 Internal Server Error", currentDate = DateTime.Now});
             }
         }
-
+        [HttpGet]
         [Route("api/coupons/{id}")]
         public async Task<ActionResult> GetCouponById(int id)
         {
@@ -46,6 +46,24 @@ namespace Coupons
 
                 return Ok(coupons);
             }
+            catch (Exception) 
+            {
+                return BadRequest(new { Message = "500 Internal Server Error", currentDate = DateTime.Now});
+            }
+        }
+
+         [HttpGet, Route("coupons/delete")]
+        public async Task<IActionResult> GetAllCouponsDelete()
+        {
+            try 
+            {
+                var coupons = await _service.GetAllCouponsRemove();
+                if (coupons == null || coupons.Count == 0)
+                {
+                    return NotFound(new { Message = "404 No coupons found in the database." , currentDate = DateTime.Now});
+                }   
+                return Ok(coupons);
+            } 
             catch (Exception) 
             {
                 return BadRequest(new { Message = "500 Internal Server Error", currentDate = DateTime.Now});

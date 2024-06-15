@@ -16,5 +16,13 @@ namespace Coupons
 
         // // Asynchronous method that returns a task completed with the created coupon entity.
         Task<CouponEntity> CreateCoupon(CouponsDto coupon);
+
+        //Change status of coupon Active to Inactive
+        Task<CouponEntity> ChangeStatus(int id);
+        //Restore status of coupon Inactive to active
+        Task<CouponEntity> RestoreStatus(int id);
+        //View All  coupons remove
+        Task<ICollection<CouponEntityUserDTO>> GetAllCouponsRemove();
+
     }
 }
