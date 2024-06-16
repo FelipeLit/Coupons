@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Coupons.Services.MarketingUsers;
 using Coupons.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MarketingUsers
 {
@@ -15,7 +17,8 @@ namespace MarketingUsers
             _service = service;
         }
 
-         // Endpoint to update a marketingUser
+        [Authorize(Roles = "Admin")]
+        // Endpoint to update a marketingUser
         [HttpPut("api/marketing-users/update/{id}")]
         public async Task<IActionResult> UpdateMarketingUser(int id, [FromBody] MarketingUserPutDTO marketingUserPutDTO)
         {
@@ -28,11 +31,26 @@ namespace MarketingUsers
             // Check if id is valid
             if (id <= 0)
             {
-                return BadRequest(new { Message = "Invalid marketingUser ID. ID must be greater than zero.", StatusCode = 400});
+                return BadRequest(new { Message = "Invalid marketingUser ID. ID must be greater than zero.",  MarketingId = id, StatusCode = 400});
             }
 
             try
             {
+                // Get the claims of the current user
+                var userRolesClaims = User?.FindAll(ClaimTypes.Role)?.Select(c => c.Value).ToList();
+
+                // Check if the user's claims do not exist or are empty
+                if (userRolesClaims == null || !userRolesClaims.Any())
+                {
+                    return Unauthorized("Could not get user information.");
+                }
+
+                // Check if the user has the "Admin" role
+                if (!userRolesClaims.Contains("Admin"))
+                {
+                    return Unauthorized("You don't have permissions (Only Admins).");
+                }
+
                 // Try to update the marketingUser
                 var result = await _service.UpdateMarketingUser(id, marketingUserPutDTO);
                 

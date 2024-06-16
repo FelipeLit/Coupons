@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using Coupons.Services.Roles;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Roles
@@ -14,12 +16,27 @@ namespace Roles
             _service = service;
         }
         
+        [Authorize(Roles = "Admin")]
         // Endpoint to get all roles
         [HttpGet, Route("api/roles")]
         public async Task<IActionResult> GetAllRoles()
         {
             try 
             {
+                // Get the claims of the current user
+                var userRolesClaims = User?.FindAll(ClaimTypes.Role)?.Select(c => c.Value).ToList();
+
+                // Check if the user's claims do not exist or are empty
+                if (userRolesClaims == null || !userRolesClaims.Any())
+                {
+                    return Unauthorized("Could not get user information.");
+                }
+
+                // Check if the user has the "Admin" role
+                if (!userRolesClaims.Contains("Admin"))
+                {
+                    return Unauthorized("You don't have permissions (Only Admins).");
+                }
                 // Call the service to get all roles
                 var roles = await _service.GetAllRoles();
 
@@ -48,7 +65,7 @@ namespace Roles
             if (id <= 0)
             {
                 // Return a 400 Bad Request response with a message
-                return BadRequest(new { Message = "Invalid role ID.", StatusCode = 400, CurrentDate = DateTime.Now });
+                return BadRequest(new { Message = "Invalid role ID.", StatusCode = 400, RoleId = id, CurrentDate = DateTime.Now });
             }
             
             try 

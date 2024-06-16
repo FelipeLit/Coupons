@@ -60,45 +60,33 @@ namespace Coupons
         }
 
         // Asynchronous method to retrieve all coupons
-        public async Task<ICollection<CouponForUserDTO>> GetAllCoupons()
+        public async Task<ICollection<CouponGetDTO>> GetAllCoupons()
         {
             var coupons = await _context.Coupons.ToListAsync();
 
             // Returns a list of all coupons from the database
-            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);
+            return _mapper.Map<ICollection<CouponGetDTO>>(coupons);
         }
 
-        public async Task<CouponForUserDTO> GetCouponById(int id)
+        public async Task<CouponGetDTO> GetCouponById(int id)
         {
             // Find the coupon by ID
             var coupons = await _context.Coupons.FindAsync(id);
 
             // Return the coupon entity user DTO.
-            return _mapper.Map<CouponForUserDTO>(coupons);
+            return _mapper.Map<CouponGetDTO>(coupons);
         }
 
-        public async Task<ICollection<MarketplaceUserForUserDTO>> GetUsersWithCoupons()
-        {
-            // Fetch users with their coupon usages from the database, including coupon details.
-            var usersWithCoupons = await _context.MarketplaceUsers
-                .Include(mu => mu.CouponUsages!)
-                .ThenInclude(cu => cu.Coupon!)
-                .ToListAsync();
-
-            // Map the result to a collection of MarketplaceUserForUserDTO and return it.
-            return _mapper.Map<ICollection<MarketplaceUserForUserDTO>>(usersWithCoupons); 
-        }
-
-        public async Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId)
+        public async Task<ICollection<CouponGetDTO>> GetCreatedCoupons(int marketplaceId)
         {
             // Return coupons whose creator has the provided ID
             var coupons = await _context.Coupons.Where(c => c.MarketingUserId == marketplaceId).ToListAsync() ?? throw new Exception("Cannot find coupon with ID: " + marketplaceId);   
 
             // Return coupons whose creator  
-            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);   
+            return _mapper.Map<ICollection<CouponGetDTO>>(coupons);   
         }
         
-        public async Task<bool> UpdateCoupon(int id, CouponForUserDTO couponForUserDTO)
+        public async Task<bool> UpdateCoupon(int id, CouponGetDTO CouponGetDTO)
         {
             // Find the coupon by ID
             var couponSearch = await _context.Coupons.FindAsync(id);
@@ -108,7 +96,7 @@ namespace Coupons
             {
                 return false;
             }
-            var couponMarketingUserId = _context.MarketingUsers.Any(c => c.Id == couponForUserDTO.MarketingUserId);
+            var couponMarketingUserId = _context.MarketingUsers.Any(c => c.Id == CouponGetDTO.MarketingUserId);
 
             if (!couponMarketingUserId)
             {
@@ -116,7 +104,7 @@ namespace Coupons
             }
 
             // Update coupon properties
-            _mapper.Map(couponForUserDTO, couponSearch);
+            _mapper.Map(CouponGetDTO, couponSearch);
             
             // Save changes to the database
             await _context.SaveChangesAsync();

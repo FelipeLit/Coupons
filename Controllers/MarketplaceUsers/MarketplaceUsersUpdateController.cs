@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Coupons.Services.MarketplaceUsers;
 using Coupons.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MarketplaceUsers
 {
@@ -15,9 +17,10 @@ namespace MarketplaceUsers
             _service = service;
         }
 
-         // Endpoint to update a marketplaceUser
+        [Authorize(Roles = "Marketplace")]
+        // Endpoint to update a marketplaceUser
         [HttpPut("api/marketplace-users/update/{id}")]
-        public async Task<IActionResult> UpdateMarketplaceUser(int id, [FromBody] MarketplaceUserForUserDTO marketplaceUserForUserDTO)
+        public async Task<IActionResult> UpdateMarketplaceUser(int id, [FromBody] MarketplaceGetDTO MarketplaceGetDTO)
         {
             // Validate that the model is valid
             if (!ModelState.IsValid)
@@ -28,13 +31,28 @@ namespace MarketplaceUsers
             // Check if id is valid
             if (id <= 0)
             {
-                return BadRequest(new { Message = "Invalid marketplaceUser ID. ID must be greater than zero.", StatusCode = 400});
+                return BadRequest(new { Message = "Invalid marketplaceUser ID. ID must be greater than zero.", MarketplaceId = id, StatusCode = 400});
             }
 
             try
             {
+                // Get the claims of the current user
+                var userRolesClaims = User?.FindAll(ClaimTypes.Role)?.Select(c => c.Value).ToList();
+
+                // Check if the user's claims do not exist or are empty
+                if (userRolesClaims == null || !userRolesClaims.Any())
+                {
+                    return Unauthorized("Could not get user information.");
+                }
+
+                // Check if the user has the "Marketplace" role
+                if (!userRolesClaims.Contains("Marketplace"))
+                {
+                    return Unauthorized("You don't have permissions (Only Marketplace).");
+                }
+
                 // Try to update the marketplaceUser
-                var result = await _service.UpdateMarketplaceUser(id, marketplaceUserForUserDTO);
+                var result = await _service.UpdateMarketplaceUser(id, MarketplaceGetDTO);
                 
                 if (!result)
                 {
