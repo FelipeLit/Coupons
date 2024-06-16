@@ -28,7 +28,7 @@ namespace Products
             // Check if id is valid
             if (id <= 0)
             {
-                return BadRequest(new { Message = "Invalid product ID. ID must be greater than zero.", StatusCode = 400});
+                return BadRequest(new { Message = "Invalid product ID. ID must be greater than zero.", StatusCode = 400 });
             }
 
             try

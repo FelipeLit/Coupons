@@ -77,7 +77,7 @@ namespace Coupons
             return _mapper.Map<CouponForUserDTO>(coupons);
         }
 
-        public async Task<ICollection<MarketplaceForUserDTO>> GetUsersWithCouponsAsync()
+        public async Task<ICollection<MarketplaceUserForUserDTO>> GetUsersWithCouponsAsync()
         {
             // Fetch users with their coupon usages from the database, including coupon details.
             var usersWithCoupons = await _context.MarketplaceUsers
@@ -85,8 +85,8 @@ namespace Coupons
                 .ThenInclude(cu => cu.Coupon!)
                 .ToListAsync();
 
-            // Map the result to a collection of MarketplaceForUserDTO and return it.
-            return _mapper.Map<ICollection<MarketplaceForUserDTO>>(usersWithCoupons); 
+            // Map the result to a collection of MarketplaceUserForUserDTO and return it.
+            return _mapper.Map<ICollection<MarketplaceUserForUserDTO>>(usersWithCoupons); 
         }
 
         public async Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId)
