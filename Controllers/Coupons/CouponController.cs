@@ -95,7 +95,7 @@ namespace Coupons
             try 
             {
                 // Call the service to get users with their coupons.
-                var coupons = await _service.GetUsersWithCouponsAsync();
+                var coupons = await _service.GetUsersWithCoupons();
 
                 // Check if the coupons list is null or empty
                 if (coupons == null || coupons.Count == 0)
