@@ -17,6 +17,10 @@ namespace SolutionVets.Utils
             CreateMap<MarketplaceUserEntity, MarketplaceUserForUserDTO>().ReverseMap();
 
             CreateMap<MarketingUserEntity, MarketingForLoginDTO>();
+
+            CreateMap<MarketingUserEntity, MarketingUserGetDTO>();
+            CreateMap<MarketingUserEntity, MarketingUserPutDTO>().ReverseMap();
+
             CreateMap<CouponUsageEntity, CouponUsageForCouponsDTO>();
 
         }
