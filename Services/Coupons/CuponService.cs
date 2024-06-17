@@ -101,16 +101,16 @@ namespace Coupons
             return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);
         }
 
-        public async Task<ICollection<CouponEntityUserDTO>> GetAllCouponsRemove()
+        public async Task<ICollection<CouponsDto>> GetAllCouponsRemove()
         {
             var coupons = await _context.Coupons.Where(c=>c.Status == "Inactive").ToListAsync();
 
             // Returns a list of all coupons from the database
-            return _mapper.Map<ICollection<CouponEntityUserDTO>>(coupons);
+            return _mapper.Map<ICollection<CouponsDto>>(coupons);
         }
 
 public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
-{
+        {
     try
     {
         var couponPurchases = await _context.PurchaseCoupon
@@ -168,31 +168,46 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
 
 
 
-        public async Task<ICollection<CouponEntityUserDTO>> GetAllCouponsRemove()
-        {
-            var coupons = await _context.Coupons.Where(c=>c.Status == "Inactive").ToListAsync();
-
-            // Returns a list of all coupons from the database
-            return _mapper.Map<ICollection<CouponEntityUserDTO>>(coupons);
-        }
+       
 
         public async Task<CouponForUserDTO> GetCouponById(int id)
         {
             var coupons = await _context.Coupons.FindAsync(id);
 
-            return _mapper.Map<CouponEntityUserDTO>(coupons);
+            return _mapper.Map<CouponForUserDTO>(coupons);
         }
 
         public async Task<CouponEntity> RestoreStatus(int id)
         {
             // Fetch users with their coupon usages from the database, including coupon details.
-            var usersWithCoupons = await _context.MarketplaceUsers
-                .Include(mu => mu.CouponUsages!)
-                .ThenInclude(cu => cu.Coupon!)
-                .ToListAsync();
+            try
+            {
+                var coupon = await _context.Coupons.FindAsync(id);
 
-            // Map the result to a collection of MarketplaceForUserDTO and return it.
-            return _mapper.Map<ICollection<MarketplaceForUserDTO>>(usersWithCoupons); 
+                if (coupon == null)
+                {
+                    throw new ValidationException($"Coupon with ID: {id} not found.");
+                }
+
+                if (coupon.Status == "Active")
+                {
+                    throw new ValidationException($"Coupon with ID: {id} is already active.");
+                }
+
+                coupon.Status = "Active";
+                _context.Coupons.Update(coupon);
+                await _context.SaveChangesAsync();
+
+                return coupon;
+            }
+            catch (ValidationException)
+            {
+                throw;//majear las excepciones en el controlador
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while changing the status of the coupon. Please try again later." + ex.Message);
+            }
         }
 
         public async Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId)
@@ -227,35 +242,8 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
             // Save changes to the database
             await _context.SaveChangesAsync();
             return true;
-           try
-            {
-                var coupon = await _context.Coupons.FindAsync(id);
-
-                if (coupon == null)
-                {
-                    throw new ValidationException($"Coupon with ID: {id} not found.");
-                }
-
-                if (coupon.Status == "Active")
-                {
-                    throw new ValidationException($"Coupon with ID: {id} is already active.");
-                }
-
-                coupon.Status = "Active";
-                _context.Coupons.Update(coupon);
-                await _context.SaveChangesAsync();
-
-                return coupon;
-            }
-            catch (ValidationException)
-            {
-                throw;//majear las excepciones en el controlador
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while changing the status of the coupon. Please try again later." + ex.Message);
-            }
         }
+
     }
 
 }
