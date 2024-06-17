@@ -26,7 +26,7 @@ namespace Coupons
                 if (coupons == null || coupons.Count == 0)
                 {
                     // Return a 404 Not Found response with a message
-                    return NotFound(new { Message = "404 No coupons found in the database.", CurrentDate = DateTime.Now });
+                    return NotFound(new { Message = "No coupons found in the database.", StatusCode = 500, CurrentDate = DateTime.Now });
                 }
 
                 // Return a 200 OK response with the list of coupons
@@ -35,7 +35,7 @@ namespace Coupons
             catch (Exception ex) 
             {
                 // Return a 500 Internal Server Error response with a message
-                return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now,  Error = ex.Message });
+                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now,  Error = ex.Message });
             }
         }
 
@@ -49,7 +49,7 @@ namespace Coupons
                 if (id <= 0)
                 {
                     // Return a 400 Bad Request response with a message
-                    return BadRequest(new { Message = "400 Invalid coupon ID.", CurrentDate = DateTime.Now });
+                    return BadRequest(new { Message = "Invalid coupon ID.", StatusCode = 400, CurrentDate = DateTime.Now });
                 }
 
                 // Call the service to get the coupon by ID
@@ -84,7 +84,7 @@ namespace Coupons
             catch (Exception) 
             {
                 // Return a 500 Internal Server Error response with a message
-                return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now });
+                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now });
             }
         }
 
@@ -117,7 +117,7 @@ namespace Coupons
                 if (coupons == null || coupons.Count == 0)
                 {
                     // Return a 404 Not Found response with a message
-                    return NotFound(new { Message = "404 No coupons found in the database.", CurrentDate = DateTime.Now });
+                    return NotFound(new { Message = "No coupons found in the database.", StatusCode = 404, CurrentDate = DateTime.Now });
                 }
                 // Return the result as a 200 OK response.
                 return Ok(coupons);        
@@ -125,7 +125,7 @@ namespace Coupons
             catch (Exception ex) 
             {
                 // Return a 500 Internal Server Error response with a message
-                return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now,  Error = ex.Message });
+                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now,  Error = ex.Message });
             }
         }
     }

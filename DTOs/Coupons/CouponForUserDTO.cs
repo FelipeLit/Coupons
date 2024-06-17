@@ -4,9 +4,6 @@ namespace Coupons.Models
 {
     public class CouponForUserDTO
     {
-        // ID is required. Should throw an error if not provided or if already exists during update
-        [Required(ErrorMessage = "ID is required.")]
-        public int Id { get; set; }
 
         // Name is required. Should not be null or empty
         [Required(ErrorMessage = "Name is required.")]

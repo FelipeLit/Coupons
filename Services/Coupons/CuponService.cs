@@ -185,6 +185,48 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
 
         public async Task<CouponEntity> RestoreStatus(int id)
         {
+            // Fetch users with their coupon usages from the database, including coupon details.
+            var usersWithCoupons = await _context.MarketplaceUsers
+                .Include(mu => mu.CouponUsages!)
+                .ThenInclude(cu => cu.Coupon!)
+                .ToListAsync();
+
+            // Map the result to a collection of MarketplaceForUserDTO and return it.
+            return _mapper.Map<ICollection<MarketplaceForUserDTO>>(usersWithCoupons); 
+        }
+
+        public async Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId)
+        {
+            // Return coupons whose creator has the provided ID
+            var coupons = await _context.Coupons.Where(c => c.MarketingUserId == marketplaceId).ToListAsync() ?? throw new Exception("Cannot find coupon with ID: " + marketplaceId);   
+
+            // Return coupons whose creator  
+            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);   
+        }
+        
+        public async Task<bool> UpdateCoupon(int id, CouponForUserDTO couponForUserDTO)
+        {
+            // Find the coupon by ID
+            var couponSearch = await _context.Coupons.FindAsync(id);
+
+            // If coupon not found, return false
+            if (couponSearch == null)
+            {
+                return false;
+            }
+            var couponMarketingUserId = _context.MarketingUsers.Any(c => c.Id == couponForUserDTO.MarketingUserId);
+
+            if (!couponMarketingUserId)
+            {
+               throw new Exception("The ID marketing user not found.");
+            }
+
+            // Update coupon properties
+            _mapper.Map(couponForUserDTO, couponSearch);
+            
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+            return true;
            try
             {
                 var coupon = await _context.Coupons.FindAsync(id);
