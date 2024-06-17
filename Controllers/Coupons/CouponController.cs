@@ -58,13 +58,29 @@ namespace Coupons
                 // Check if the coupon is null
                 if (coupon == null)
                 {
-                    // Return a 404 Not Found response with a message
-                    return NotFound(new { Message = "404 Coupon not found in the database.", CurrentDate = DateTime.Now });
-                }
+                    return NotFound(new { Message = "404 No coupons found in the database." , currentDate = DateTime.Now});
+                }   
 
-                // Return a 200 OK response with the coupon
-                return Ok(coupon);
+                return Ok(coupons);
             }
+            catch (Exception) 
+            {
+                return BadRequest(new { Message = "500 Internal Server Error", currentDate = DateTime.Now});
+            }
+        }
+
+         [HttpGet, Route("coupons/delete")]
+        public async Task<IActionResult> GetAllCouponsDelete()
+        {
+            try 
+            {
+                var coupons = await _service.GetAllCouponsRemove();
+                if (coupons == null || coupons.Count == 0)
+                {
+                    return NotFound(new { Message = "404 No coupons found in the database." , currentDate = DateTime.Now});
+                }   
+                return Ok(coupons);
+            } 
             catch (Exception) 
             {
                 // Return a 500 Internal Server Error response with a message

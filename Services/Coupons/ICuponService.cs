@@ -16,13 +16,16 @@ namespace Coupons
 
         // Asynchronous method that returns a task completed with the created coupon entity.
         Task<CouponEntity> CreateCoupon(CouponsDto coupon);
-        
-        // Asynchronous method that returns a task completed with a boolean value indicating if the coupon update based on an ID was successful.
-        Task<bool> UpdateCoupon(int id, CouponForUserDTO couponForUserDTO);
 
-        // Asynchronous method that returns a task completed with the list of coupons created by a certain user (CUPONES CREADOS POR UNO DE MARKETING).
-        Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId);
+
+        //Change status of coupon Active to Inactive
+        Task<CouponEntity> ChangeStatus(int id);
+        //Restore status of coupon Inactive to active
+        Task<CouponEntity> RestoreStatus(int id);
+        //View All  coupons remove
+        Task<ICollection<CouponsDto>> GetAllCouponsRemove();
+
+    }
         
-        // This is an interface method declaration for getting users with their coupons.
-        Task<ICollection<MarketplaceForUserDTO>> GetUsersWithCouponsAsync();    }
-}
+   }
+
