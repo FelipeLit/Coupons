@@ -109,6 +109,65 @@ namespace Coupons
             return _mapper.Map<ICollection<CouponEntityUserDTO>>(coupons);
         }
 
+public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
+{
+    try
+    {
+        var couponPurchases = await _context.PurchaseCoupon
+            .Include(pc => pc.Coupon)
+            .Include(pc => pc.Purchase)
+            .Select(pc => new
+            {
+                pc.Id,
+                pc.CouponId,
+                pc.PurchaseId,
+                Purchase = new
+                {
+                    pc.Purchase.Id,
+                    pc.Purchase.Date,
+                    pc.Purchase.Amount,
+                    pc.Purchase.Discount,
+                    pc.Purchase.Total,
+                    // Asignar valores por defecto para MarketplaceUserId y ProductId
+                    MarketplaceUserId = pc.Purchase.MarketplaceUserId,
+                    ProductId = pc.Purchase.ProductId
+                }
+            })
+            .ToListAsync();
+
+        var result = couponPurchases.Select(cp => new PurchaseCouponEntity
+        {
+            Id = cp.Id,
+            CouponId = cp.CouponId,
+            PurchaseId = cp.PurchaseId,
+            Purchase = new PurchaseEntity
+            {
+                Id = cp.Purchase.Id,
+                Date = cp.Purchase.Date,
+                Amount = cp.Purchase.Amount,
+                Discount = cp.Purchase.Discount,
+                Total = cp.Purchase.Total,
+                // Asignar los valores de MarketplaceUserId y ProductId
+                MarketplaceUserId = cp.Purchase.MarketplaceUserId,
+                ProductId = cp.Purchase.ProductId
+            }
+        }).ToList();
+
+        return result;
+    }
+    catch (ValidationException)
+    {
+        throw; // Manejar las excepciones en el controlador
+    }
+    catch (Exception ex)
+    {
+        throw new Exception("An error occurred while retrieving the purchased coupons. Please try again later.");
+    }
+}
+
+
+
+
         public async Task<ICollection<CouponEntityUserDTO>> GetAllCouponsRemove()
         {
             var coupons = await _context.Coupons.Where(c=>c.Status == "Inactive").ToListAsync();
