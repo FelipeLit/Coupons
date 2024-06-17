@@ -9,5 +9,7 @@ namespace Coupons.Models
         public decimal Amount { get; set; }
         public decimal Discount { get; set; }
         public decimal Total { get; set; }
+        public MarketplaceUserEntity? MarketplaceUser { get; set; } 
+        public ProductEntity? Product { get; set; }
     }
 }
