@@ -1,3 +1,12 @@
+
+using System.ComponentModel.DataAnnotations;
+using System.Transactions;
+using AutoMapper;
+using Coupons.Data;
+using Coupons.Dto;
+using Coupons.Models;
+using Microsoft.EntityFrameworkCore;
+
 using AutoMapper;
 using Coupons.Data;
 using Coupons.Models;
@@ -7,7 +16,6 @@ namespace Coupons.Services.Products
 {
     public class ProductService : IProductService
     {
-        // Private variable to hold the database context
         private readonly CouponsContext _context;
         private readonly IMapper _mapper;
 
@@ -17,7 +25,113 @@ namespace Coupons.Services.Products
             _context = context;
             _mapper = mapper;
         }
+<<<<<<< HEAD
         public async Task<ICollection<ProductGetDTO>> GetAllProducts()
+=======
+
+
+        public async Task<ProductEntity> ChangeStatus(int id)
+        {
+            try
+            {
+                var product = await _context.Products.FindAsync(id);
+
+                if (product == null)
+                {
+                    throw new ValidationException($"product with ID: {id} not found.");
+                }
+
+                if (product.Status == "Inactive")
+                {
+                    throw new ValidationException($"product with ID: {id} is already inactive.");
+                }
+
+                product.Status = "Inactive";
+                _context.Products.Update(product);
+                await _context.SaveChangesAsync();
+
+                return product;
+            }
+            catch (ValidationException)
+            {
+                throw;//majear las excepciones en el controlador
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while changing the status of the product. Please try again later." + ex.Message);
+            }
+        }
+
+        public async Task<ProductEntity> CreateProduct(ProductDto productDto)
+        {
+            try
+            {
+                var Product = new ProductEntity
+                {
+                    Name = productDto.Name,
+                    Price = productDto.Price,
+                    CategoryId = productDto.CategoryId,
+                };
+                _context.Products.Add(Product);
+                await _context.SaveChangesAsync();
+
+
+                return Product;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while creating the product: " + ex.Message);
+            }
+        }
+
+        public async Task<ICollection<ProductEntity>> GetAllProductsRemove()
+        {
+            var products = await _context.Products.Where(p=>p.Status == "Inactive").ToListAsync();
+            if (products != null)
+            {
+                return products;
+            }
+            else 
+            {
+                return null;
+            }
+        }
+
+        public async Task<ProductEntity> RestoreStatus(int id)
+        {
+            try
+            {
+                var product = await _context.Products.FindAsync(id);
+
+                if (product == null)
+                {
+                    throw new ValidationException($"product with ID: {id} not found.");
+                }
+
+                if (product.Status == "Active")
+                {
+                    throw new ValidationException($"product with ID: {id} is already active.");
+                }
+
+                product.Status = "Active";
+                _context.Products.Update(product);
+                await _context.SaveChangesAsync();
+
+                return product;
+            }
+            catch (ValidationException)
+            {
+                throw;//majear las excepciones en el controlador
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while changing the status of the product. Please try again later." + ex.Message);
+            }
+        }
+        // Private variable to hold the database context
+
+        public async Task<ICollection<ProductForUserDTO>> GetAllProducts()
+>>>>>>> c6624d9e34ff8d502155952230bafbcba3745d41
         {
             var products = await _context.Products.ToListAsync();
 
@@ -49,15 +163,22 @@ namespace Coupons.Services.Products
 
             if (!productCategoryId)
             {
-               throw new Exception("Product category ID not found.");
+                throw new Exception("Product category ID not found.");
             }
 
             // Update product properties
+<<<<<<< HEAD
             _mapper.Map(ProductPutDTO, productSearch);
             
+=======
+            _mapper.Map(productForUserDTO, productSearch);
+
+>>>>>>> c6624d9e34ff8d502155952230bafbcba3745d41
             // Save changes to the database
             await _context.SaveChangesAsync();
             return true;
+
         }
     }
+
 }
