@@ -41,7 +41,7 @@ namespace Coupons
 
         // Endpoint to get a coupon by its ID
         [HttpGet, Route("api/coupons/{id}")]
-        public async Task<ActionResult> GetCouponById(int id)
+        public async Task<IActionResult> GetCouponById(int id)
         {
             try 
             {
@@ -58,13 +58,29 @@ namespace Coupons
                 // Check if the coupon is null
                 if (coupon == null)
                 {
-                    // Return a 404 Not Found response with a message
-                    return NotFound(new { Message = "Coupon not found in the database.", StatusCode = 404, CurrentDate = DateTime.Now });
-                }
+                    return NotFound(new { Message = "404 No coupons found in the database." , currentDate = DateTime.Now});
+                }   
 
-                // Return a 200 OK response with the coupon
                 return Ok(coupon);
             }
+            catch (Exception) 
+            {
+                return BadRequest(new { Message = "500 Internal Server Error", currentDate = DateTime.Now});
+            }
+        }
+
+         [HttpGet, Route("coupons/delete")]
+        public async Task<IActionResult> GetAllCouponsDelete()
+        {
+            try 
+            {
+                var coupons = await _service.GetAllCouponsRemove();
+                if (coupons == null || coupons.Count == 0)
+                {
+                    return NotFound(new { Message = "404 No coupons found in the database." , currentDate = DateTime.Now});
+                }   
+                return Ok(coupons);
+            } 
             catch (Exception) 
             {
                 // Return a 500 Internal Server Error response with a message
