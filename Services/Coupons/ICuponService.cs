@@ -29,7 +29,8 @@ namespace Coupons
         Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased();
 
         Task<ICollection<MarketplaceUserForUserDTO>> GetUsersWithCouponsAsync();    
-    }
         
         // This is an interface method declaration for getting users with their coupons.
+        Task<ICollection<MarketplaceUserForUserDTO>> GetUsersWithCoupons();    
+    }
 }

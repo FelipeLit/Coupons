@@ -23,6 +23,11 @@ namespace SolutionVets.Utils
 
             CreateMap<CouponUsageEntity, CouponUsageForCouponsDTO>();
 
+            CreateMap<UserRoleEntity, UserRoleGetDTO>();
+            CreateMap<UserRoleEntity, UserRolePostDTO>().ReverseMap();
+
+            CreateMap<RoleEntity, RoleGetDTO>();
+
         }
     }
 }

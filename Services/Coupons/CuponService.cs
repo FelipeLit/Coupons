@@ -177,7 +177,7 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
             return _mapper.Map<CouponForUserDTO>(coupons);
         }
 
-        public async Task<ICollection<MarketplaceUserForUserDTO>> GetUsersWithCouponsAsync()
+        public async Task<ICollection<MarketplaceUserForUserDTO>> GetUsersWithCoupons()
         {
             // Fetch users with their coupon usages from the database, including coupon details.
             var usersWithCoupons = await _context.MarketplaceUsers
