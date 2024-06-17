@@ -5,6 +5,7 @@ using AutoMapper;
 using Coupons.Data;
 using Coupons.Dto;
 using Coupons.Models;
+using Microsoft.EntityFrameworkCore;
 
 using AutoMapper;
 using Coupons.Data;
@@ -80,7 +81,18 @@ namespace Coupons.Services.Products
             }
         }
 
-
+        public async Task<ICollection<ProductEntity>> GetAllProductsRemove()
+        {
+            var products = await _context.Products.Where(p=>p.Status == "Inactive").ToListAsync();
+            if (products != null)
+            {
+                return products;
+            }
+            else 
+            {
+                return null;
+            }
+        }
 
         public async Task<ProductEntity> RestoreStatus(int id)
         {

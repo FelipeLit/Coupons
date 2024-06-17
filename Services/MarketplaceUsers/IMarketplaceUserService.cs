@@ -12,7 +12,7 @@ namespace Coupons.Services.MarketplaceUsers
         // Asynchronous method that returns a task completed with a boolean value indicating if the marketplaceUser update based on an ID was successful.
         Task<bool> UpdateMarketplaceUser(int id, MarketplaceUserForUserDTO marketplaceUserForUserDTO);
         // Asynchronous method that returns a task completed with the created marketplace entity.
-        // Task<MarketplaceUserEntity> CreateMarketplaceUser(MarketplaceUserDto marketplaceUserDtoDto);
+        //Task<MarketplaceUserEntity> CreateMarketplaceUser(MarketplaceUserDto marketplaceUserDtoDto);
         //Change status of marketplace Active to Inactive
         Task<MarketplaceUserEntity> ChangeStatus(int id);
         //Restore status of marketplace Inactive to active

@@ -15,6 +15,7 @@ namespace Coupons.Services.Products
         Task<ProductEntity> ChangeStatus(int id);
         //Restore status of product Inactive to active
         Task<ProductEntity> RestoreStatus(int id);
+        Task<ICollection<ProductEntity>> GetAllProductsRemove();
 
         // Asynchronous method that returns a task completed with a collection of product entities.
         Task<ICollection<ProductForUserDTO>> GetAllProducts();
