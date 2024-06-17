@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <title>Productos</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Domine:wght@400..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Inconsolata:wght@200..900&family=Outfit:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Signika+Negative:wght@300..700&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- JQuery and Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container-wrapper">
+        <div class="container">
+            <div class="table-responsive">
+                <div class="table-wrapper">    
+                    <div class="table-title">
+                        <div class="row content-title mb-4">
+                            <div class="col-md-4">
+                                <div class="show-entries">
+                                    <a href="/crear" class="btn btn-success btnCreate">
+                                        <i class="bi bi-plus-circle-fill me-2"></i>
+                                        Agregar Producto
+                                    </a>
+                                </div>                        
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                <h2>Detalles de <b>Productos</b></h2>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-box">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
+                                        <input type="text" class="form-control" placeholder="Buscar&hellip;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="table-container">
+                        <table class="table table-bordered rounded">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Nombre</th>
+                                    <th class="text-center">Descripción</th>
+                                    <th class="text-center">Precio de Compra</th>
+                                    <th class="text-center">Precio de Venta</th>
+                                    <th class="text-center">Cantidad</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr>
+                                    <td>1</td>
+                                    <td>Producto A</td>
+                                    <td>Descripción del producto A</td>
+                                    <td>$10.00</td>
+                                    <td>$15.00</td>
+                                    <td>100</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Producto B</td>
+                                    <td>Descripción del producto B</td>
+                                    <td>$20.00</td>
+                                    <td>$30.00</td>
+                                    <td>200</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>3</td>
+                                    <td>Producto C</td>
+                                    <td>Descripción del producto C</td>
+                                    <td>$30.00</td>
+                                    <td>$45.00</td>
+                                    <td>150</td>
+                                    <td>Disponible</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                </tr>
+
+
+
+                                <!-- incluir filas usando @foreach -->
+                                <!--
+                                @foreach($productos as $producto)
+                                <tr>
+                                    <td>{{$producto->id}}</td>
+                                    <td>{{$producto->nombre}}</td>
+                                    <td>{{$producto->descripcion}}</td>
+                                    <td>${{$producto->precio_compra}}</td>
+                                    <td>${{$producto->precio_venta}}</td>
+                                    <td>{{$producto->cantidad}}</td>
+                                    <td>{{$producto->estado}}</td>
+                                    <td>
+                                        <a href="#" class="view" title="View" data-toggle="tooltip"><i class="bi bi-eye-fill"></i></a>
+                                        <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill ms-2 me-2"></i></a>
+                                        <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;"></i></a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                                -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>        
+        </div>  
+    </div>
+</body>
+</html>
+
+<style>
+    body {
+
+        background-image: url("https://img.freepik.com/free-vector/copy-space-wavy-white-background-layers_23-2148845469.jpg?t=st=1718354253~exp=1718357853~hmac=5f6a9b0b62afd684f1db0ebaddb260aa7d22cd4d57c43f464fd7be8aebc870b7&w=1380"); 
+        color: #566787;
+        background-size: cover;
+        background-position: center;
+        font-family: 'Signika Negative', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+    }
+    .container-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+    .container {
+        background: #e6e6e6cc;
+        border: 1px solid #566787;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 1200px;
+        overflow: hidden;
+    }
+    .btnCreate {
+        background-color: transparent;
+        border-color: #566787;
+        color: #566787;
+        font-size: 1.8vh;
+    }
+    .btnCreate:hover {
+        border: #566787;
+        background-color: #566787;
+        color: #fff;
+        font-size: 1.8vh;
+    }
+    .table-responsive {
+        margin: 30px 0;
+        font-size: 1.8vh;
+    }
+    .table-wrapper {
+        min-width: 1000px;
+    }
+    .table-title {
+        padding-bottom: 10px;
+        margin: 0 0 10px;
+        min-height: 45px;
+    }
+    .content-title {
+        width: 100%;
+    }
+    .table-title h2 {
+        margin: 5px 0 0;
+        font-size: 3.5vh;
+    }
+    .table-container {
+        max-height: 450px;
+        overflow-y: auto;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .search-box {
+    position: relative;
+    float: right;
+    }
+    .search-box .input-group {
+        min-width: 200px;
+        position: absolute;
+        right: 0;
+    }
+    .search-box .input-group-addon, .search-box input {
+        border-color: #ddd;
+        border-radius: 0;
+    }
+    .search-box .input-group-addon {
+        border: none;
+        border: none;
+        background: transparent;
+        position: absolute;
+        z-index: 9;
+    }
+    .search-box input {
+        height: 34px;
+        padding-left: 28px;		
+        box-shadow: none !important;
+        border-width: 0 0 1px 0;
+    }
+    .search-box input:focus {
+        border-color: #566787;
+    }
+    .search-box i {
+        color: #a0a5b1;
+        font-size: 19px;
+        position: relative;
+        top: 2px;
+        left: -10px;
+    }
+    table.table tr th, 
+    table.table tr td {
+        border: 0.2rem solid rgba(97, 109, 133, 0.445);
+        color: #566787;
+    }
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    table.table td:last-child {
+        width: 130px;
+    }
+    table.table td a {
+        color: #a0a5b1;
+        display: inline-block;
+        margin: 0 5px;
+    }
+    table.table td a.view {
+        color: #03A9F4;
+    }
+    table.table td a.edit {
+        color: #FFC107;
+    }
+    table.table td a.delete {
+        color: #E34724;
+    }
+    table.table td i {
+        font-size: 19px;
+    }    
+    .hint-text {
+        float: left;
+        margin-top: 10px;
+        font-size: 1.2px;
+    }
+    /* Estilos para la barra de desplazamiento */
+    /* WebKit (Chrome, Safari, Opera) */
+    ::-webkit-scrollbar {
+        width: 10px; /* Ancho de la barra de desplazamiento */
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Color de fondo de la pista */
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #566787; /* Color del 'scrollbar' */
+        border-radius: 5px; /* Borde redondeado */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #a0a5b1; /* Color del 'scrollbar' al pasar el ratón */
+    }
+</style>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+        // Animate select box length
+        var searchInput = $(".search-box input");
+        var inputGroup = $(".search-box .input-group");
+        var boxWidth = inputGroup.width();
+        searchInput.focus(function(){
+            inputGroup.animate({
+                width: "300"
+            });
+        }).blur(function(){
+            inputGroup.animate({
+                width: boxWidth
+            });
+        });
+    });
+    </script>

@@ -32,10 +32,10 @@ namespace Coupons
                 // Return a 200 OK response with the list of coupons
                 return Ok(coupons);
             } 
-            catch (Exception) 
+            catch (Exception ex) 
             {
                 // Return a 500 Internal Server Error response with a message
-                return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now });
+                return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now,  Error = ex.Message });
             }
         }
 
@@ -69,6 +69,47 @@ namespace Coupons
             {
                 // Return a 500 Internal Server Error response with a message
                 return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now });
+            }
+        }
+
+        // Method to obtain the coupons created by the authenticated marketing
+        // [HttpGet, Route("api/mycoupons")]
+        // public IActionResult GetMyCoupons()
+        // {
+        //     var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        //     if (userIdClaim == null)
+        //     {
+        //         return Unauthorized("No se pudo obtener la información del usuario.");
+        //     }
+
+        //     var userId = int.Parse(userIdClaim);
+        //     var coupons = _service.GetCreatedCoupons(userId);
+        //     return Ok(coupons);
+        // }
+
+        // This defines a GET endpoint at "api/coupon-usages".
+        [HttpGet, Route("api/coupon-usages")]
+        public async Task<IActionResult> GetUsersWithCouponsAsync()
+        {
+            try 
+            {
+                // Call the service to get users with their coupons.
+                var coupons = await _service.GetUsersWithCouponsAsync();
+
+                // Check if the coupons list is null or empty
+                if (coupons == null || coupons.Count == 0)
+                {
+                    // Return a 404 Not Found response with a message
+                    return NotFound(new { Message = "404 No coupons found in the database.", CurrentDate = DateTime.Now });
+                }
+                // Return the result as a 200 OK response.
+                return Ok(coupons);        
+            } 
+            catch (Exception ex) 
+            {
+                // Return a 500 Internal Server Error response with a message
+                return BadRequest(new { Message = "500 Internal Server Error", CurrentDate = DateTime.Now,  Error = ex.Message });
             }
         }
     }

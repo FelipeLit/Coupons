@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Coupons.Models
 {
-    public class CouponEntityUserDTO
+    public class CouponForUserDTO
     {
         // ID is required. Should throw an error if not provided or if already exists during update
         [Required(ErrorMessage = "ID is required.")]
@@ -55,7 +55,6 @@ namespace Coupons.Models
         // MaxPurchaseAmount is required and should be a non-negative decimal and greater than MinPurchaseAmount
         [Required(ErrorMessage = "Maximum Purchase Amount is required.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Maximum Purchase Amount must be greater than zero.")]
-        [Compare("MinPurchaseAmount", ErrorMessage = "Maximum Purchase Amount must be greater than Minimum Purchase Amount.")]
         public decimal MaxPurchaseAmount { get; set; }
 
         // Status is required. Can be "Inactive" or "Active"

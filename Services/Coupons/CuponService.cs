@@ -53,29 +53,80 @@ namespace Coupons
 
                 return coupon;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("An error occurred while creating the coupon. Please try again later.");
             }
         }
 
         // Asynchronous method to retrieve all coupons
-        public async Task<ICollection<CouponEntityUserDTO>> GetAllCoupons()
+        public async Task<ICollection<CouponForUserDTO>> GetAllCoupons()
         {
             var coupons = await _context.Coupons.ToListAsync();
 
             // Returns a list of all coupons from the database
-            return _mapper.Map<ICollection<CouponEntityUserDTO>>(coupons);
+            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);
         }
 
-        public async Task<CouponEntityUserDTO> GetCouponById(int id)
+        public async Task<CouponForUserDTO> GetCouponById(int id)
         {
-             var coupons = await _context.Coupons.FindAsync(id);
+            // Find the coupon by ID
+            var coupons = await _context.Coupons.FindAsync(id);
 
-            return _mapper.Map<CouponEntityUserDTO>(coupons);
+            // Return the coupon entity user DTO.
+            return _mapper.Map<CouponForUserDTO>(coupons);
         }
 
+        public async Task<ICollection<MarketplaceForUserDTO>> GetUsersWithCouponsAsync()
+        {
+            // Fetch users with their coupon usages from the database, including coupon details.
+            var usersWithCoupons = await _context.MarketplaceUsers
+                .Include(mu => mu.CouponUsages!)
+                .ThenInclude(cu => cu.Coupon!)
+                .ToListAsync();
 
+            // Map the result to a collection of MarketplaceForUserDTO and return it.
+            return _mapper.Map<ICollection<MarketplaceForUserDTO>>(usersWithCoupons); 
+        }
+
+        public async Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId)
+        {
+            // Return coupons whose creator has the provided ID
+            var coupons = await _context.Coupons.Where(c => c.MarketingUserId == marketplaceId).ToListAsync() ?? throw new Exception("Cannot find coupon with ID: " + marketplaceId);   
+
+            // Return coupons whose creator  
+            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);   
+        }
+        
+        public async Task<bool> UpdateCoupon(int id, CouponForUserDTO couponForUserDTO)
+        {
+            // Find the coupon by ID
+            var couponSearch = await _context.Coupons.FindAsync(id);
+
+            // If coupon not found, return false
+            if (couponSearch == null)
+            {
+                return false;
+            }
+
+            // Update coupon properties
+            couponSearch.Name = couponForUserDTO.Name;
+            couponSearch.Description = couponForUserDTO.Description;
+            couponSearch.StartDate = couponForUserDTO.StartDate;
+            couponSearch.EndDate = couponForUserDTO.EndDate;
+            couponSearch.DiscountType = couponForUserDTO.DiscountType;
+            couponSearch.IsLimited = couponForUserDTO.IsLimited;
+            couponSearch.UsageLimit = couponForUserDTO.UsageLimit;
+            couponSearch.AmountUses = couponForUserDTO.AmountUses;
+            couponSearch.MinPurchaseAmount = couponForUserDTO.MinPurchaseAmount;
+            couponSearch.MaxPurchaseAmount = couponForUserDTO.MaxPurchaseAmount;
+            couponSearch.Status = couponForUserDTO.Status;
+            couponSearch.MarketingUserId = couponForUserDTO.MarketingUserId;
+            
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 
 }
