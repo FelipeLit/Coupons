@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Coupons.Models
 {
     public class ProductEntity
