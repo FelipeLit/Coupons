@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Coupons.Models
 {
     public class ProductEntity
@@ -6,8 +8,10 @@ namespace Coupons.Models
         public string? Name { get; set; }
         public decimal Price { get; set; }
         public int CategoryId { get; set; }
-        public CategoryEntity? Category { get; set; }
+        public string Status { get; set; } 
+        [JsonIgnore]
         public ICollection<PurchaseEntity>? Purchases { get; set; }
+        public CategoryEntity? Category { get; set; }
 
     }
 }
