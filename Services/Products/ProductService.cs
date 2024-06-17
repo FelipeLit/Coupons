@@ -3,6 +3,7 @@ using System.Transactions;
 using Coupons.Data;
 using Coupons.Dto;
 using Coupons.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coupons.Services.Products
 {
@@ -65,6 +66,19 @@ namespace Coupons.Services.Products
            catch (Exception ex)
             {
                 throw new Exception("An error occurred while creating the product: "+ex.Message);
+            }
+        }
+
+        public async Task<ICollection<ProductEntity>> GetAllProductsRemove()
+        {
+            var products = await _context.Products.Where(p=>p.Status == "Inactive").ToListAsync();
+            if (products != null)
+            {
+                return products;
+            }
+            else 
+            {
+                return null;
             }
         }
 

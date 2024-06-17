@@ -12,6 +12,7 @@ namespace Coupons.Services.Products
         Task<ProductEntity> ChangeStatus(int id);
         //Restore status of product Inactive to active
         Task<ProductEntity> RestoreStatus(int id);
+        Task<ICollection<ProductEntity>> GetAllProductsRemove();
 
     }
 }
