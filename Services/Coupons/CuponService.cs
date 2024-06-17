@@ -212,9 +212,36 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
             return true;
         }
 
-        public Task<CouponEntity> RestoreStatus(int id)
+        public async Task<CouponEntity> RestoreStatus(int id)
         {
-            throw new NotImplementedException();
+             try
+            {
+                var coupon = await _context.Coupons.FindAsync(id);
+
+                if (coupon == null)
+                {
+                    throw new ValidationException($"Coupon with ID: {id} not found.");
+                }
+
+                if (coupon.Status == "Active")
+                {
+                    throw new ValidationException($"Coupon with ID: {id} is already active.");
+                }
+
+                coupon.Status = "Active";
+                _context.Coupons.Update(coupon);
+                await _context.SaveChangesAsync();
+
+                return coupon;
+            }
+            catch (ValidationException)
+            {
+                throw;//majear las excepciones en el controlador
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while changing the status of the coupon. Please try again later." + ex.Message);
+            }
         }
 
         public Task<ICollection<CouponGetMarkertplaceDTO>> GetUsersWithCouponsAsync()

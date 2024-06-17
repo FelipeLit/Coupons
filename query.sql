@@ -197,3 +197,5 @@ DROP TABLE IF EXISTS `Roles`;
 DROP TABLE IF EXISTS `UserRoles`;
 
 DROP TABLE IF EXISTS `MarketingUsers`;
+
+SELECT * FROM `MarketingUsers`;

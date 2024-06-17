@@ -1,4 +1,5 @@
 using AutoMapper;
+using Coupons.Dto;
 using Coupons.Models;
 
 namespace SolutionVets.Utils
@@ -9,6 +10,7 @@ namespace SolutionVets.Utils
         {
 
             CreateMap<CouponEntity, CouponViewUserDTO>();
+            CreateMap<CouponEntity, CouponsDto>();
             CreateMap<CouponEntity, CouponPutDTO>().ReverseMap();
 
             CreateMap<ProductEntity, ProductGetDTO>();

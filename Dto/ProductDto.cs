@@ -14,6 +14,6 @@ namespace Coupons.Dto
         public decimal Price { get; set; }
         [Required]
         public int CategoryId { get; set; } 
-        public string Status { get; set; } 
+        public string? Status { get; set; } 
     }
 }

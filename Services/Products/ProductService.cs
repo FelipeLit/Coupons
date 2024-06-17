@@ -25,9 +25,6 @@ namespace Coupons.Services.Products
             _context = context;
             _mapper = mapper;
         }
-<<<<<<< HEAD
-        public async Task<ICollection<ProductGetDTO>> GetAllProducts()
-=======
 
 
         public async Task<ProductEntity> ChangeStatus(int id)
@@ -71,6 +68,8 @@ namespace Coupons.Services.Products
                     Name = productDto.Name,
                     Price = productDto.Price,
                     CategoryId = productDto.CategoryId,
+                    Status = productDto.Status,
+          
                 };
                 _context.Products.Add(Product);
                 await _context.SaveChangesAsync();
@@ -130,8 +129,7 @@ namespace Coupons.Services.Products
         }
         // Private variable to hold the database context
 
-        public async Task<ICollection<ProductForUserDTO>> GetAllProducts()
->>>>>>> c6624d9e34ff8d502155952230bafbcba3745d41
+        public async Task<ICollection<ProductGetDTO>> GetAllProducts()
         {
             var products = await _context.Products.ToListAsync();
 
@@ -167,13 +165,8 @@ namespace Coupons.Services.Products
             }
 
             // Update product properties
-<<<<<<< HEAD
             _mapper.Map(ProductPutDTO, productSearch);
             
-=======
-            _mapper.Map(productForUserDTO, productSearch);
-
->>>>>>> c6624d9e34ff8d502155952230bafbcba3745d41
             // Save changes to the database
             await _context.SaveChangesAsync();
             return true;

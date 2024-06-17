@@ -97,8 +97,6 @@ namespace Coupons
 
                 return Ok(coupon);
             }
-<<<<<<< HEAD
-=======
             catch (Exception) 
             {
                 return BadRequest(new { Message = "500 Internal Server Error", currentDate = DateTime.Now});
@@ -117,10 +115,10 @@ namespace Coupons
                 }   
                 return Ok(coupons);
             } 
-            catch (Exception) 
+            catch (Exception ex) 
             {
                 // Return a 500 Internal Server Error response with a message
-                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now });
+                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now, error =ex.Message });
             }
         }
 
@@ -158,7 +156,6 @@ namespace Coupons
                 // Return the result as a 200 OK response.
                 return Ok(coupons);        
             } 
->>>>>>> c6624d9e34ff8d502155952230bafbcba3745d41
             catch (Exception ex) 
             {
                 // Return a 500 Internal Server Error response with a message
