@@ -25,6 +25,9 @@ namespace Coupons.Services.Products
             _context = context;
             _mapper = mapper;
         }
+<<<<<<< HEAD
+        public async Task<ICollection<ProductGetDTO>> GetAllProducts()
+=======
 
 
         public async Task<ProductEntity> ChangeStatus(int id)
@@ -128,23 +131,24 @@ namespace Coupons.Services.Products
         // Private variable to hold the database context
 
         public async Task<ICollection<ProductForUserDTO>> GetAllProducts()
+>>>>>>> c6624d9e34ff8d502155952230bafbcba3745d41
         {
             var products = await _context.Products.ToListAsync();
 
             // Returns a list of all products from the database
-            return _mapper.Map<ICollection<ProductForUserDTO>>(products);
+            return _mapper.Map<ICollection<ProductGetDTO>>(products);
         }
 
-        public async Task<ProductForUserDTO> GetProductById(int id)
+        public async Task<ProductGetDTO> GetProductById(int id)
         {
             // Find the product by ID
             var products = await _context.Products.FindAsync(id);
 
             // Return the product entity user DTO.
-            return _mapper.Map<ProductForUserDTO>(products);
+            return _mapper.Map<ProductGetDTO>(products);
         }
 
-        public async Task<bool> UpdateProduct(int id, ProductForUserDTO productForUserDTO)
+        public async Task<bool> UpdateProduct(int id, ProductPutDTO ProductPutDTO)
         {
             // Find the product by ID
             var productSearch = await _context.Products.FindAsync(id);
@@ -155,7 +159,7 @@ namespace Coupons.Services.Products
                 return false;
             }
 
-            var productCategoryId = _context.Categories.Any(c => c.Id == productForUserDTO.CategoryId);
+            var productCategoryId = _context.Categories.Any(c => c.Id == ProductPutDTO.CategoryId);
 
             if (!productCategoryId)
             {
@@ -163,8 +167,13 @@ namespace Coupons.Services.Products
             }
 
             // Update product properties
+<<<<<<< HEAD
+            _mapper.Map(ProductPutDTO, productSearch);
+            
+=======
             _mapper.Map(productForUserDTO, productSearch);
 
+>>>>>>> c6624d9e34ff8d502155952230bafbcba3745d41
             // Save changes to the database
             await _context.SaveChangesAsync();
             return true;

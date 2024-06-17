@@ -18,11 +18,11 @@ namespace Coupons.Services.Products
         Task<ICollection<ProductEntity>> GetAllProductsRemove();
 
         // Asynchronous method that returns a task completed with a collection of product entities.
-        Task<ICollection<ProductForUserDTO>> GetAllProducts();
+        Task<ICollection<ProductGetDTO>> GetAllProducts();
         // Asynchronous method that returns a task completed with a product entity based on the provided ID.
-        Task<ProductForUserDTO> GetProductById(int id);
+        Task<ProductGetDTO> GetProductById(int id);
         // Asynchronous method that returns a task completed with a boolean value indicating if the product update based on an ID was successful.
-        Task<bool> UpdateProduct(int id, ProductForUserDTO productForUserDTO);
+        Task<bool> UpdateProduct(int id, ProductPutDTO productPutDTO);
 
 
     }

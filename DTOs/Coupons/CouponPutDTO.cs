@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Coupons.Models
 {
-    public class CouponForUserDTO
+    public class CouponPutDTO
     {
 
         // Name is required. Should not be null or empty
@@ -23,16 +23,17 @@ namespace Coupons.Models
         // EndDate is required and should be after StartDate
         [Required(ErrorMessage = "End Date is required.")]
         [DataType(DataType.DateTime, ErrorMessage = "Invalid DateTime format for End Date.")]
+        [Compare(nameof(StartDate), ErrorMessage = "End Date must be greater than Start Date.")]
         public DateTime EndDate { get; set; }
 
         // DiscountType is required. Can be "Percentage" or "Net"
         [Required(ErrorMessage = "Discount Type is required.")]
-        [RegularExpression("Percentage|Net", ErrorMessage = "Discount Type must be 'Percentage' or 'Net'.")]
+        [RegularExpression("^(Percentage|Net)$", ErrorMessage = "Discount Type must be 'Percentage' or 'Net'.")]
         public string? DiscountType { get; set; }
 
         // IsLimited is required. Should be a boolean
         [Required(ErrorMessage = "IsLimited is required.")]
-        public bool? IsLimited { get; set; }
+        public bool IsLimited { get; set; }
 
         // UsageLimit is required and should be a positive number
         [Required(ErrorMessage = "Usage Limit is required.")]
@@ -56,7 +57,7 @@ namespace Coupons.Models
 
         // Status is required. Can be "Inactive" or "Active"
         [Required(ErrorMessage = "Status is required.")]
-        [RegularExpression("Inactive|Active", ErrorMessage = "Status must be 'Inactive' or 'Active'.")]
+        [RegularExpression("^(Inactive|Active)$", ErrorMessage = "Status must be 'Inactive' or 'Active'.")]
         public string? Status { get; set; }
 
         // MarketingUserId is required. Should be a positive integer

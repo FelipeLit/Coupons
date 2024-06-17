@@ -93,12 +93,12 @@ namespace Coupons
         }
 
         // Asynchronous method to retrieve all coupons
-        public async Task<ICollection<CouponForUserDTO>> GetAllCoupons()
+        public async Task<ICollection<CouponPutDTO>> GetAllCoupons()
         {
             var coupons = await _context.Coupons.ToListAsync();
 
             // Returns a list of all coupons from the database
-            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);
+            return _mapper.Map<ICollection<CouponPutDTO>>(coupons);
         }
 
         public async Task<ICollection<CouponsDto>> GetAllCouponsRemove()
@@ -170,35 +170,24 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
 
        
 
-        public async Task<CouponForUserDTO> GetCouponById(int id)
+        public async Task<CouponPutDTO> GetCouponById(int id)
         {
             var coupons = await _context.Coupons.FindAsync(id);
 
-            return _mapper.Map<CouponForUserDTO>(coupons);
+            // Return the coupon entity user DTO.
+            return _mapper.Map<CouponPutDTO>(coupons);
         }
 
-        public async Task<ICollection<MarketplaceUserForUserDTO>> GetUsersWithCoupons()
-        {
-            // Fetch users with their coupon usages from the database, including coupon details.
-            var usersWithCoupons = await _context.MarketplaceUsers
-                .Include(mu => mu.CouponUsages!)
-                .ThenInclude(cu => cu.Coupon!)
-                .ToListAsync();
-
-            // Map the result to a collection of MarketplaceUserForUserDTO and return it.
-            return _mapper.Map<ICollection<MarketplaceUserForUserDTO>>(usersWithCoupons); 
-        }
-
-        public async Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId)
+        public async Task<ICollection<CouponPutDTO>> GetCreatedCoupons(int marketplaceId)
         {
             // Return coupons whose creator has the provided ID
             var coupons = await _context.Coupons.Where(c => c.MarketingUserId == marketplaceId).ToListAsync() ?? throw new Exception("Cannot find coupon with ID: " + marketplaceId);   
 
             // Return coupons whose creator  
-            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);   
+            return _mapper.Map<ICollection<CouponPutDTO>>(coupons);   
         }
         
-        public async Task<bool> UpdateCoupon(int id, CouponForUserDTO couponForUserDTO)
+        public async Task<bool> UpdateCoupon(int id, CouponPutDTO CouponPutDTO)
         {
             // Find the coupon by ID
             var couponSearch = await _context.Coupons.FindAsync(id);
@@ -208,7 +197,7 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
             {
                 return false;
             }
-            var couponMarketingUserId = _context.MarketingUsers.Any(c => c.Id == couponForUserDTO.MarketingUserId);
+            var couponMarketingUserId = _context.MarketingUsers.Any(c => c.Id == CouponPutDTO.MarketingUserId);
 
             if (!couponMarketingUserId)
             {
@@ -216,7 +205,7 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
             }
 
             // Update coupon properties
-            _mapper.Map(couponForUserDTO, couponSearch);
+            _mapper.Map(CouponPutDTO, couponSearch);
             
             // Save changes to the database
             await _context.SaveChangesAsync();
@@ -228,10 +217,20 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
             throw new NotImplementedException();
         }
 
-        Task<ICollection<MarketplaceUserForUserDTO>> ICouponService.GetUsersWithCouponsAsync()
+        public Task<ICollection<CouponGetMarkertplaceDTO>> GetUsersWithCouponsAsync()
         {
             throw new NotImplementedException();
         }
+
+        public Task<ICollection<CouponGetMarkertplaceDTO>> GetUsersWithCoupons()
+        {
+            throw new NotImplementedException();
+        }
+
+        // Task<ICollection<MarketplaceUserForUserDTO>> ICouponService.GetUsersWithCouponsAsync()
+        // {
+        //     throw new NotImplementedException();
+        // }
     }
 
 }

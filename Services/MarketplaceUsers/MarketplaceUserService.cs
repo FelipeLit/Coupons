@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Coupons.Data;
 using Coupons.Dto;
 using Coupons.Models;
@@ -9,9 +10,18 @@ namespace Coupons.Services.MarketplaceUsers
     public class MarketplaceUserService : IMarketplaceUserService
     {
         private readonly CouponsContext _context;
-        public MarketplaceUserService(CouponsContext context)
+        private readonly IMapper _mapper;
+        public MarketplaceUserService(CouponsContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+        }
+        public async Task<ICollection<MarketplaceGetDTO>> GetAllMarketplaceUsers()
+        {
+            var marketplaceUsers = await _context.MarketplaceUsers.ToListAsync();
+
+            // Returns a list of all marketplaceUsers from the database
+            return _mapper.Map<ICollection<MarketplaceGetDTO>>(marketplaceUsers);
         }
         public async Task<MarketplaceUserEntity> ChangeStatus(int id)
         {
@@ -45,6 +55,14 @@ namespace Coupons.Services.MarketplaceUsers
             }
         }
 
+        public async Task<MarketplaceGetDTO> GetMarketplaceUserById(int id)
+        {
+            // Find the marketplaceUser by ID
+            var marketplaceUsers = await _context.MarketplaceUsers.FindAsync(id);
+
+            // Return the marketplaceUser entity user DTO.
+            return _mapper.Map<MarketplaceGetDTO>(marketplaceUsers);
+        }
         public async Task<MarketplaceUserEntity> CreateMarketplaceUser(MarketplaceUserDto marketplaceUserDtoDto)
         {
             try
@@ -81,16 +99,6 @@ namespace Coupons.Services.MarketplaceUsers
             }
         }
 
-        public Task<ICollection<MarketplaceUserForUserDTO>> GetAllMarketplaceUsers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<MarketplaceUserForUserDTO> GetMarketplaceUserById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<MarketplaceUserEntity> RestoreStatus(int id)
         {
             try
@@ -123,7 +131,24 @@ namespace Coupons.Services.MarketplaceUsers
             }
         }
 
-        public Task<bool> UpdateMarketplaceUser(int id, MarketplaceUserForUserDTO marketplaceUserForUserDTO)
+        public async Task<ICollection<MarketplaceUserGetCouponDTO>> GetUsersWithCoupons()
+        {
+            // Fetch users with their coupon usages from the database, including coupon details.
+            var usersWithCoupons = await _context.MarketplaceUsers
+                .Include(mu => mu.CouponUsages!)
+                .ThenInclude(cu => cu.Coupon!)
+                .ToListAsync();
+
+            // Map the result to a collection of MarketplaceGetDTO and return it.
+            return _mapper.Map<ICollection<MarketplaceUserGetCouponDTO>>(usersWithCoupons); 
+        }
+
+        public Task<bool> UpdateMarketplaceUser(int id, MarketplaceGetDTO MarketplaceGetDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateMarketplaceUser(int id, CouponGetMarkertplaceDTO marketplaceUserForUserDTO)
         {
             throw new NotImplementedException();
         }

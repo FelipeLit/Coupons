@@ -7,21 +7,23 @@ namespace SolutionVets.Utils
     {
         public MappingProfile()
         {
-            CreateMap<CouponEntity, CouponForUserDTO>();
-            CreateMap<CouponEntity, CouponForUserDTO>().ReverseMap();
 
-            CreateMap<ProductEntity, ProductForUserDTO>();
-            CreateMap<ProductEntity, ProductForUserDTO>().ReverseMap();
+            CreateMap<CouponEntity, CouponViewUserDTO>();
+            CreateMap<CouponEntity, CouponPutDTO>().ReverseMap();
+
+            CreateMap<ProductEntity, ProductGetDTO>();
+            CreateMap<ProductEntity, ProductPutDTO>().ReverseMap();
             
-            CreateMap<MarketplaceUserEntity, MarketplaceUserForUserDTO>();
-            CreateMap<MarketplaceUserEntity, MarketplaceUserForUserDTO>().ReverseMap();
+            CreateMap<MarketplaceUserEntity, MarketplaceUserGetCouponDTO>();
+            CreateMap<MarketplaceUserEntity, MarketplaceGetDTO>();
+            CreateMap<MarketplaceUserEntity, MarketplaceGetDTO>().ReverseMap();
 
             CreateMap<MarketingUserEntity, MarketingForLoginDTO>();
-
             CreateMap<MarketingUserEntity, MarketingUserGetDTO>();
             CreateMap<MarketingUserEntity, MarketingUserPutDTO>().ReverseMap();
 
-            CreateMap<CouponUsageEntity, CouponUsageForCouponsDTO>();
+            CreateMap<CouponUsageEntity, CouponUsageGetDTO>();
+            CreateMap<CouponUsageEntity, CouponUsageRedeemDTO>();
 
             CreateMap<UserRoleEntity, UserRoleGetDTO>();
             CreateMap<UserRoleEntity, UserRolePostDTO>().ReverseMap();

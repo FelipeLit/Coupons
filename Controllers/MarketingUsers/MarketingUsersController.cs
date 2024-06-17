@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using Coupons.Services.MarketingUsers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketingUsers
@@ -15,11 +17,27 @@ namespace MarketingUsers
         }
         
         // Endpoint to get all marketingUsers
+        [Authorize(Roles = "Admin")]
         [HttpGet, Route("api/marketing-users")]
         public async Task<IActionResult> GetAllMarketingUsers()
         {
             try 
             {
+                // Get the claims of the current user
+                var userRolesClaims = User?.FindAll(ClaimTypes.Role)?.Select(c => c.Value).ToList();
+
+                // Check if the user's claims do not exist or are empty
+                if (userRolesClaims == null || !userRolesClaims.Any())
+                {
+                    return Unauthorized("Could not get user information.");
+                }
+
+                // Check if the user has the "Admin" role
+                if (!userRolesClaims.Contains("Admin"))
+                {
+                    return Unauthorized("You don't have permissions (Only Admins).");
+                }
+                
                 // Call the service to get all marketingUsers
                 var marketingUsers = await _service.GetAllMarketingUsers();
 
@@ -41,16 +59,32 @@ namespace MarketingUsers
         }
 
         // Endpoint to get a marketingUser by its ID
+        [Authorize(Roles = "Admin")]
         [HttpGet, Route("api/marketing-users/{id}")]
         public async Task<ActionResult> GetMarketingUserById(int id)
         {
+            // Validate the ID is a positive integer
+            if (id <= 0)
+            {
+                // Return a 400 Bad Request response with a message
+                return BadRequest(new { Message = "Invalid marketingUser ID.", StatusCode = 400, MarketingId = id, CurrentDate = DateTime.Now });
+            }
+
             try 
             {
-                // Validate the ID is a positive integer
-                if (id <= 0)
+                // Get the claims of the current user
+                var userRolesClaims = User?.FindAll(ClaimTypes.Role)?.Select(c => c.Value).ToList();
+
+                // Check if the user's claims do not exist or are empty
+                if (userRolesClaims == null || !userRolesClaims.Any())
                 {
-                    // Return a 400 Bad Request response with a message
-                    return BadRequest(new { Message = "Invalid marketingUser ID.", StatusCode = 400, CurrentDate = DateTime.Now });
+                    return Unauthorized("Could not get user information.");
+                }
+
+                // Check if the user has the "Admin" role
+                if (!userRolesClaims.Contains("Admin"))
+                {
+                    return Unauthorized("You don't have permissions (Only Admins).");
                 }
 
                 // Call the service to get the marketingUser by ID
@@ -72,23 +106,6 @@ namespace MarketingUsers
                 return BadRequest(new { Message = " Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now });
             }
         }
-
-        // Method to obtain the marketingUsers created by the authenticated marketing
-        // [HttpGet, Route("api/mymarketingUsers")]
-        // public IActionResult GetMyMarketingUsers()
-        // {
-        //     var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        //     if (userIdClaim == null)
-        //     {
-        //         return Unauthorized("No se pudo obtener la información del usuario.");
-        //     }
-
-        //     var userId = int.Parse(userIdClaim);
-        //     var marketingUsers = _service.GetCreatedMarketingUsers(userId);
-        //     return Ok(marketingUsers);
-        // }
-
 
     }
 }

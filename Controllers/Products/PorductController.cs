@@ -1,4 +1,5 @@
 using Coupons.Services.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Products
@@ -14,6 +15,7 @@ namespace Products
             _service = service;
         }
         
+        [AllowAnonymous]
         // Endpoint to get all products
         [HttpGet, Route("api/products")]
         public async Task<IActionResult> GetAllProducts()
@@ -39,7 +41,8 @@ namespace Products
                 return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now,  Error = ex.Message });
             }
         }
-
+        
+        [AllowAnonymous]
         // Endpoint to get a product by its ID
         [HttpGet, Route("api/products/{id}")]
         public async Task<ActionResult> GetProductById(int id)

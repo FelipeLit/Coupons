@@ -2,7 +2,6 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Coupons.Services.Auth;
 using Coupons.Data;
-using Coupons.Services.Emails;
 using Coupons.Services.MarketingUsers;
 using Coupons.Services.MarketplaceUsers;
 using Coupons.Services.Products;
@@ -12,6 +11,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Coupons;
+using Coupons.Services.Redemptions;
+using Coupons.Services.Validations;
+
 
 // We create a WebApplicationBuilder object, which will help us configure and build our web application
 var builder = WebApplication.CreateBuilder(args);
@@ -53,16 +55,18 @@ builder.Services.AddCors(options =>
     });
 });
 
+
 // We register the repository services for authentication, coupons and redemption in our dependency injection container
 // This allows us to inject these services into other parts of our application
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IMarketingUserService, MarketingUserService>();
 builder.Services.AddScoped<IMarketplaceUserService, MarketplaceUserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IPurchaseService, PurchaseService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IRedemptionService, RedemptionService>();
+builder.Services.AddScoped<ICouponRedemptionValidator, CouponRedemptionValidator>();
 
 //We configure the JWT authentication middleware
 builder.Services.AddAuthentication(options =>

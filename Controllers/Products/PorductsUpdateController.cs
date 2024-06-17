@@ -17,7 +17,7 @@ namespace Products
 
          // Endpoint to update a product
         [HttpPut("api/products/update/{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductForUserDTO productForUserDTO)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductPutDTO ProductPutDTO)
         {
             // Validate that the model is valid
             if (!ModelState.IsValid)
@@ -28,13 +28,13 @@ namespace Products
             // Check if id is valid
             if (id <= 0)
             {
-                return BadRequest(new { Message = "Invalid product ID. ID must be greater than zero.", StatusCode = 400 });
+                return BadRequest(new { Message = "Invalid product ID. ID must be greater than zero." ,ProductId = id , StatusCode = 400 });
             }
 
             try
             {
                 // Try to update the product
-                var result = await _service.UpdateProduct(id, productForUserDTO);
+                var result = await _service.UpdateProduct(id, ProductPutDTO);
                 
                 if (!result)
                 {
