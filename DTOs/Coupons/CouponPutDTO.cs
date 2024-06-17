@@ -23,7 +23,6 @@ namespace Coupons.Models
         // EndDate is required and should be after StartDate
         [Required(ErrorMessage = "End Date is required.")]
         [DataType(DataType.DateTime, ErrorMessage = "Invalid DateTime format for End Date.")]
-        [Compare(nameof(StartDate), ErrorMessage = "End Date must be greater than Start Date.")]
         public DateTime EndDate { get; set; }
 
         // DiscountType is required. Can be "Percentage" or "Net"

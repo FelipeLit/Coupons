@@ -17,7 +17,6 @@ namespace Coupons.Models
         // Password is required and should meet complexity requirements
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be between 8 and 100 characters.")]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$", ErrorMessage = "Password must be at least 8 characters long, contain at least one letter and one number.")]
         public string? Password { get; set; }
 
         // Email is required and should be in a valid email format

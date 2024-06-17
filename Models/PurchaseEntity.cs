@@ -11,5 +11,6 @@ namespace Coupons.Models
         public decimal Total { get; set; }
         public MarketplaceUserEntity? MarketplaceUser { get; set; } 
         public ProductEntity? Product { get; set; }
+        public ICollection<PurchaseCouponEntity>? PurchaseCoupons { get; set; }
     }
 }
