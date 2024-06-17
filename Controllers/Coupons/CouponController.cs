@@ -41,7 +41,7 @@ namespace Coupons
 
         // Endpoint to get a coupon by its ID
         [HttpGet, Route("api/coupons/{id}")]
-        public async Task<ActionResult> GetCouponById(int id)
+        public async Task<IActionResult> GetCouponById(int id)
         {
             try 
             {
@@ -61,7 +61,7 @@ namespace Coupons
                     return NotFound(new { Message = "404 No coupons found in the database." , currentDate = DateTime.Now});
                 }   
 
-                return Ok(coupons);
+                return Ok(coupon);
             }
             catch (Exception) 
             {

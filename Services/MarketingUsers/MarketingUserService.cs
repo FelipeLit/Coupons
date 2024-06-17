@@ -81,6 +81,16 @@ namespace Coupons.Services.MarketingUsers
             }
         }
 
+        public Task<ICollection<MarketingUserGetDTO>> GetAllMarketingUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<MarketingUserGetDTO> GetMarketingUserById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<MarketingUserEntity> RestoreStatus(int id)
         {
              try
@@ -111,6 +121,11 @@ namespace Coupons.Services.MarketingUsers
             {
                 throw new Exception("An error occurred while changing the status of the marketing user. Please try again later." + ex.Message);
             }
+        }
+
+        public Task<bool> UpdateMarketingUser(int id, MarketingUserPutDTO marketingUserPutDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

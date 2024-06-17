@@ -81,6 +81,16 @@ namespace Coupons.Services.MarketplaceUsers
             }
         }
 
+        public Task<ICollection<MarketplaceUserForUserDTO>> GetAllMarketplaceUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<MarketplaceUserForUserDTO> GetMarketplaceUserById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<MarketplaceUserEntity> RestoreStatus(int id)
         {
             try
@@ -111,6 +121,11 @@ namespace Coupons.Services.MarketplaceUsers
             {
                 throw new Exception("An error occurred while changing the status of the product. Please try again later." + ex.Message);
             }
+        }
+
+        public Task<bool> UpdateMarketplaceUser(int id, MarketplaceUserForUserDTO marketplaceUserForUserDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

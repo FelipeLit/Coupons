@@ -177,37 +177,16 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
             return _mapper.Map<CouponForUserDTO>(coupons);
         }
 
-        public async Task<CouponEntity> RestoreStatus(int id)
+        public async Task<ICollection<MarketplaceUserForUserDTO>> GetUsersWithCouponsAsync()
         {
             // Fetch users with their coupon usages from the database, including coupon details.
-            try
-            {
-                var coupon = await _context.Coupons.FindAsync(id);
+            var usersWithCoupons = await _context.MarketplaceUsers
+                .Include(mu => mu.CouponUsages!)
+                .ThenInclude(cu => cu.Coupon!)
+                .ToListAsync();
 
-                if (coupon == null)
-                {
-                    throw new ValidationException($"Coupon with ID: {id} not found.");
-                }
-
-                if (coupon.Status == "Active")
-                {
-                    throw new ValidationException($"Coupon with ID: {id} is already active.");
-                }
-
-                coupon.Status = "Active";
-                _context.Coupons.Update(coupon);
-                await _context.SaveChangesAsync();
-
-                return coupon;
-            }
-            catch (ValidationException)
-            {
-                throw;//majear las excepciones en el controlador
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while changing the status of the coupon. Please try again later." + ex.Message);
-            }
+            // Map the result to a collection of MarketplaceUserForUserDTO and return it.
+            return _mapper.Map<ICollection<MarketplaceUserForUserDTO>>(usersWithCoupons); 
         }
 
         public async Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId)
@@ -244,6 +223,15 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
             return true;
         }
 
+        public Task<CouponEntity> RestoreStatus(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ICollection<MarketplaceUserForUserDTO>> ICouponService.GetUsersWithCouponsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
