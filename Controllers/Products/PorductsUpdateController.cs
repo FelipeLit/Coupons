@@ -17,7 +17,7 @@ namespace Products
 
          // Endpoint to update a product
         [HttpPut("api/products/update/{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductGetDTO ProductGetDTO)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductPutDTO ProductPutDTO)
         {
             // Validate that the model is valid
             if (!ModelState.IsValid)
@@ -34,7 +34,7 @@ namespace Products
             try
             {
                 // Try to update the product
-                var result = await _service.UpdateProduct(id, ProductGetDTO);
+                var result = await _service.UpdateProduct(id, ProductPutDTO);
                 
                 if (!result)
                 {

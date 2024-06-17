@@ -53,7 +53,7 @@ namespace Coupons
             catch (Exception ex) 
             {
                 // Return a 500 Internal Server Error response with a message
-                return StatusCode(500, new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now,  Error = ex.Message });
+                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now,  Error = ex.Message });
             }
         }
 

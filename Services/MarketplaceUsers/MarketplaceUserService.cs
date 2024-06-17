@@ -53,7 +53,7 @@ namespace Coupons.Services.MarketplaceUsers
             return true;
         }
 
-        public async Task<ICollection<MarketplaceUserGetCoupon>> GetUsersWithCoupons()
+        public async Task<ICollection<MarketplaceUserGetCouponDTO>> GetUsersWithCoupons()
         {
             // Fetch users with their coupon usages from the database, including coupon details.
             var usersWithCoupons = await _context.MarketplaceUsers
@@ -62,7 +62,7 @@ namespace Coupons.Services.MarketplaceUsers
                 .ToListAsync();
 
             // Map the result to a collection of MarketplaceGetDTO and return it.
-            return _mapper.Map<ICollection<MarketplaceUserGetCoupon>>(usersWithCoupons); 
+            return _mapper.Map<ICollection<MarketplaceUserGetCouponDTO>>(usersWithCoupons); 
         }
     }
 }

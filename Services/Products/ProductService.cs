@@ -34,7 +34,7 @@ namespace Coupons.Services.Products
             return _mapper.Map<ProductGetDTO>(products);
         }
 
-        public async Task<bool> UpdateProduct(int id, ProductGetDTO ProductGetDTO)
+        public async Task<bool> UpdateProduct(int id, ProductPutDTO ProductPutDTO)
         {
             // Find the product by ID
             var productSearch = await _context.Products.FindAsync(id);
@@ -45,7 +45,7 @@ namespace Coupons.Services.Products
                 return false;
             }
 
-            var productCategoryId = _context.Categories.Any(c => c.Id == ProductGetDTO.CategoryId);
+            var productCategoryId = _context.Categories.Any(c => c.Id == ProductPutDTO.CategoryId);
 
             if (!productCategoryId)
             {
@@ -53,7 +53,7 @@ namespace Coupons.Services.Products
             }
 
             // Update product properties
-            _mapper.Map(ProductGetDTO, productSearch);
+            _mapper.Map(ProductPutDTO, productSearch);
             
             // Save changes to the database
             await _context.SaveChangesAsync();

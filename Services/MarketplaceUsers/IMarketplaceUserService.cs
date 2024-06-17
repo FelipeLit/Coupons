@@ -11,6 +11,6 @@ namespace Coupons.Services.MarketplaceUsers
         // Asynchronous method that returns a task completed with a boolean value indicating if the marketplaceUser update based on an ID was successful.
         Task<bool> UpdateMarketplaceUser(int id, MarketplaceGetDTO MarketplaceGetDTO);
         // This is an interface method declaration for getting users with their coupons.
-        Task<ICollection<MarketplaceUserGetCoupon>> GetUsersWithCoupons();    
+        Task<ICollection<MarketplaceUserGetCouponDTO>> GetUsersWithCoupons();    
     }
 }

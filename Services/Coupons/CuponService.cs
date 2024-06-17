@@ -60,33 +60,33 @@ namespace Coupons
         }
 
         // Asynchronous method to retrieve all coupons
-        public async Task<ICollection<CouponGetDTO>> GetAllCoupons()
+        public async Task<ICollection<CouponPutDTO>> GetAllCoupons()
         {
             var coupons = await _context.Coupons.ToListAsync();
 
             // Returns a list of all coupons from the database
-            return _mapper.Map<ICollection<CouponGetDTO>>(coupons);
+            return _mapper.Map<ICollection<CouponPutDTO>>(coupons);
         }
 
-        public async Task<CouponGetDTO> GetCouponById(int id)
+        public async Task<CouponPutDTO> GetCouponById(int id)
         {
             // Find the coupon by ID
             var coupons = await _context.Coupons.FindAsync(id);
 
             // Return the coupon entity user DTO.
-            return _mapper.Map<CouponGetDTO>(coupons);
+            return _mapper.Map<CouponPutDTO>(coupons);
         }
 
-        public async Task<ICollection<CouponGetDTO>> GetCreatedCoupons(int marketplaceId)
+        public async Task<ICollection<CouponPutDTO>> GetCreatedCoupons(int marketplaceId)
         {
             // Return coupons whose creator has the provided ID
             var coupons = await _context.Coupons.Where(c => c.MarketingUserId == marketplaceId).ToListAsync() ?? throw new Exception("Cannot find coupon with ID: " + marketplaceId);   
 
             // Return coupons whose creator  
-            return _mapper.Map<ICollection<CouponGetDTO>>(coupons);   
+            return _mapper.Map<ICollection<CouponPutDTO>>(coupons);   
         }
         
-        public async Task<bool> UpdateCoupon(int id, CouponGetDTO CouponGetDTO)
+        public async Task<bool> UpdateCoupon(int id, CouponPutDTO CouponPutDTO)
         {
             // Find the coupon by ID
             var couponSearch = await _context.Coupons.FindAsync(id);
@@ -96,7 +96,7 @@ namespace Coupons
             {
                 return false;
             }
-            var couponMarketingUserId = _context.MarketingUsers.Any(c => c.Id == CouponGetDTO.MarketingUserId);
+            var couponMarketingUserId = _context.MarketingUsers.Any(c => c.Id == CouponPutDTO.MarketingUserId);
 
             if (!couponMarketingUserId)
             {
@@ -104,7 +104,7 @@ namespace Coupons
             }
 
             // Update coupon properties
-            _mapper.Map(CouponGetDTO, couponSearch);
+            _mapper.Map(CouponPutDTO, couponSearch);
             
             // Save changes to the database
             await _context.SaveChangesAsync();
