@@ -23,7 +23,7 @@ namespace Coupons.Services.Purchases
         {
 
             var purchases = await _context.Purchases
-                .Include(p => p.PurchaseCoupons) // Ensure Product is included
+                .Include(p => p.PurchaseCoupons) 
                     .ThenInclude(p => p.Coupon)
                 .ToListAsync();
 

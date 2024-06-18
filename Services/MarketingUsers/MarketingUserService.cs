@@ -73,15 +73,9 @@ namespace Coupons.Services.MarketingUsers
 
         public async Task<ICollection<MarketingUserGetDTO>> GetAllMarketingUserRemove()
         {
-            var marketingUSer = await _context.MarketingUsers.Where(p => p.Status == "Inactive").ToListAsync();
-            if (marketingUSer != null)
-            {
-                return _mapper.Map<ICollection<MarketingUserGetDTO>>(marketingUSer);
-            }
-            else
-            {
-                return null;
-            }
+            var marketingUsers = await _context.MarketingUsers.Where(p => p.Status == "Inactive").ToListAsync();
+            
+            return marketingUsers.Count != 0 ? _mapper.Map<ICollection<MarketingUserGetDTO>>(marketingUsers) : [];
         }
 
         public async Task<ICollection<MarketingUserGetDTO>> GetAllMarketingUsers()
