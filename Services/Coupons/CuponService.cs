@@ -86,23 +86,31 @@ namespace Coupons
 
                 return coupon;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("An error occurred while creating the coupon. Please try again later.");
             }
         }
 
         // Asynchronous method to retrieve all coupons
-        public async Task<ICollection<CouponEntityUserDTO>> GetAllCoupons()
+        public async Task<ICollection<CouponForUserDTO>> GetAllCoupons()
         {
             var coupons = await _context.Coupons.ToListAsync();
 
             // Returns a list of all coupons from the database
-            return _mapper.Map<ICollection<CouponEntityUserDTO>>(coupons);
+            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);
+        }
+
+        public async Task<ICollection<CouponsDto>> GetAllCouponsRemove()
+        {
+            var coupons = await _context.Coupons.Where(c=>c.Status == "Inactive").ToListAsync();
+
+            // Returns a list of all coupons from the database
+            return _mapper.Map<ICollection<CouponsDto>>(coupons);
         }
 
 public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
-{
+        {
     try
     {
         var couponPurchases = await _context.PurchaseCoupon
@@ -160,51 +168,69 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
 
 
 
-        public async Task<ICollection<CouponEntityUserDTO>> GetAllCouponsRemove()
-        {
-            var coupons = await _context.Coupons.Where(c=>c.Status == "Inactive").ToListAsync();
+       
 
-            // Returns a list of all coupons from the database
-            return _mapper.Map<ICollection<CouponEntityUserDTO>>(coupons);
-        }
-
-        public async Task<CouponEntityUserDTO> GetCouponById(int id)
+        public async Task<CouponForUserDTO> GetCouponById(int id)
         {
             var coupons = await _context.Coupons.FindAsync(id);
 
-            return _mapper.Map<CouponEntityUserDTO>(coupons);
+            return _mapper.Map<CouponForUserDTO>(coupons);
         }
 
-        public async Task<CouponEntity> RestoreStatus(int id)
+        public async Task<ICollection<MarketplaceUserForUserDTO>> GetUsersWithCouponsAsync()
         {
-           try
+            // Fetch users with their coupon usages from the database, including coupon details.
+            var usersWithCoupons = await _context.MarketplaceUsers
+                .Include(mu => mu.CouponUsages!)
+                .ThenInclude(cu => cu.Coupon!)
+                .ToListAsync();
+
+            // Map the result to a collection of MarketplaceUserForUserDTO and return it.
+            return _mapper.Map<ICollection<MarketplaceUserForUserDTO>>(usersWithCoupons); 
+        }
+
+        public async Task<ICollection<CouponForUserDTO>> GetCreatedCoupons(int marketplaceId)
+        {
+            // Return coupons whose creator has the provided ID
+            var coupons = await _context.Coupons.Where(c => c.MarketingUserId == marketplaceId).ToListAsync() ?? throw new Exception("Cannot find coupon with ID: " + marketplaceId);   
+
+            // Return coupons whose creator  
+            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);   
+        }
+        
+        public async Task<bool> UpdateCoupon(int id, CouponForUserDTO couponForUserDTO)
+        {
+            // Find the coupon by ID
+            var couponSearch = await _context.Coupons.FindAsync(id);
+
+            // If coupon not found, return false
+            if (couponSearch == null)
             {
-                var coupon = await _context.Coupons.FindAsync(id);
-
-                if (coupon == null)
-                {
-                    throw new ValidationException($"Coupon with ID: {id} not found.");
-                }
-
-                if (coupon.Status == "Active")
-                {
-                    throw new ValidationException($"Coupon with ID: {id} is already active.");
-                }
-
-                coupon.Status = "Active";
-                _context.Coupons.Update(coupon);
-                await _context.SaveChangesAsync();
-
-                return coupon;
+                return false;
             }
-            catch (ValidationException)
+            var couponMarketingUserId = _context.MarketingUsers.Any(c => c.Id == couponForUserDTO.MarketingUserId);
+
+            if (!couponMarketingUserId)
             {
-                throw;//majear las excepciones en el controlador
+               throw new Exception("The ID marketing user not found.");
             }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while changing the status of the coupon. Please try again later." + ex.Message);
-            }
+
+            // Update coupon properties
+            _mapper.Map(couponForUserDTO, couponSearch);
+            
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public Task<CouponEntity> RestoreStatus(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ICollection<MarketplaceUserForUserDTO>> ICouponService.GetUsersWithCouponsAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 

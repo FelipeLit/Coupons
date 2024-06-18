@@ -1,7 +1,14 @@
+
 using System.ComponentModel.DataAnnotations;
 using System.Transactions;
+using AutoMapper;
 using Coupons.Data;
 using Coupons.Dto;
+using Coupons.Models;
+using Microsoft.EntityFrameworkCore;
+
+using AutoMapper;
+using Coupons.Data;
 using Coupons.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +17,15 @@ namespace Coupons.Services.Products
     public class ProductService : IProductService
     {
         private readonly CouponsContext _context;
-        public ProductService(CouponsContext context)
+        private readonly IMapper _mapper;
+
+        // Constructor injecting the database context dependency
+        public ProductService(CouponsContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
+
 
         public async Task<ProductEntity> ChangeStatus(int id)
         {
@@ -49,23 +61,23 @@ namespace Coupons.Services.Products
 
         public async Task<ProductEntity> CreateProduct(ProductDto productDto)
         {
-           try
-           {
-            var Product = new ProductEntity
+            try
             {
-                Name = productDto.Name,
-                Price = productDto.Price,
-                CategoryId = productDto.CategoryId,
-            };
-            _context.Products.Add(Product);
-            await _context.SaveChangesAsync();
-              
-            
-            return Product;
-           }
-           catch (Exception ex)
+                var Product = new ProductEntity
+                {
+                    Name = productDto.Name,
+                    Price = productDto.Price,
+                    CategoryId = productDto.CategoryId,
+                };
+                _context.Products.Add(Product);
+                await _context.SaveChangesAsync();
+
+
+                return Product;
+            }
+            catch (Exception ex)
             {
-                throw new Exception("An error occurred while creating the product: "+ex.Message);
+                throw new Exception("An error occurred while creating the product: " + ex.Message);
             }
         }
 
@@ -113,5 +125,51 @@ namespace Coupons.Services.Products
                 throw new Exception("An error occurred while changing the status of the product. Please try again later." + ex.Message);
             }
         }
+        // Private variable to hold the database context
+
+        public async Task<ICollection<ProductForUserDTO>> GetAllProducts()
+        {
+            var products = await _context.Products.ToListAsync();
+
+            // Returns a list of all products from the database
+            return _mapper.Map<ICollection<ProductForUserDTO>>(products);
+        }
+
+        public async Task<ProductForUserDTO> GetProductById(int id)
+        {
+            // Find the product by ID
+            var products = await _context.Products.FindAsync(id);
+
+            // Return the product entity user DTO.
+            return _mapper.Map<ProductForUserDTO>(products);
+        }
+
+        public async Task<bool> UpdateProduct(int id, ProductForUserDTO productForUserDTO)
+        {
+            // Find the product by ID
+            var productSearch = await _context.Products.FindAsync(id);
+
+            // If product not found, return false
+            if (productSearch == null)
+            {
+                return false;
+            }
+
+            var productCategoryId = _context.Categories.Any(c => c.Id == productForUserDTO.CategoryId);
+
+            if (!productCategoryId)
+            {
+                throw new Exception("Product category ID not found.");
+            }
+
+            // Update product properties
+            _mapper.Map(productForUserDTO, productSearch);
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+            return true;
+
+        }
     }
+
 }

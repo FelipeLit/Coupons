@@ -7,7 +7,21 @@ namespace SolutionVets.Utils
     {
         public MappingProfile()
         {
-            CreateMap<CouponEntity ,CouponEntityUserDTO>();
+            CreateMap<CouponEntity, CouponForUserDTO>();
+            CreateMap<CouponEntity, CouponForUserDTO>().ReverseMap();
+
+            CreateMap<ProductEntity, ProductForUserDTO>();
+            CreateMap<ProductEntity, ProductForUserDTO>().ReverseMap();
+            
+            CreateMap<MarketplaceUserEntity, MarketplaceUserForUserDTO>();
+            CreateMap<MarketplaceUserEntity, MarketplaceUserForUserDTO>().ReverseMap();
+
+            CreateMap<MarketingUserEntity, MarketingForLoginDTO>();
+
+            CreateMap<MarketingUserEntity, MarketingUserGetDTO>();
+            CreateMap<MarketingUserEntity, MarketingUserPutDTO>().ReverseMap();
+
+            CreateMap<CouponUsageEntity, CouponUsageForCouponsDTO>();
 
         }
     }
