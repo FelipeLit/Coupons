@@ -70,7 +70,6 @@ namespace Coupons.Services.MarketplaceUsers
         {
             try
             {  
-                var user = await _context.MarketplaceUsers.FindAsync(marketplaceUserDto.Id);
                 var marketplaceUser = new MarketplaceUserEntity
                 {
                     Username = marketplaceUserDto.Username,
@@ -83,10 +82,15 @@ namespace Coupons.Services.MarketplaceUsers
                 await _context.SaveChangesAsync();
 
                     var SendEmail = new MailersendUtils();
+
+                    if(SendEmail == null){
+                        throw new ValidationException("Error al enviar el correo");
+                    }
+
                     await SendEmail.EnviarCorreoUser
-                    (
-                        "pipedrive29@gmail.com",
-                        "Bienvenido a Coupons",
+                    ( 
+                        marketplaceUserDto.Email,
+                        $"Bienvenido a Coupons",
                         "Bienvenido a Coupons"
                     );
                 
