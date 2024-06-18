@@ -33,7 +33,7 @@ namespace Coupons.Controllers.Purchases
         catch (Exception ex)
         {
            
-            return StatusCode(500, "An internal error occurred. Please try again later.");
+            return BadRequest(new { Message = "An error occurred while updating the coupon.", StatusCode = 500, CurrentDate = DateTime.Now, Error = ex.Message });
         }
         }
 

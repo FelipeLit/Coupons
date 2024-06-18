@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Coupons.Models
 {
-    public class CouponViewUserDTO
+    public class CouponGetDTO
     {
         public string? Name { get; set; }
         public string? Description { get; set; }

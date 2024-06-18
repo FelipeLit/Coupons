@@ -1,5 +1,6 @@
 using AutoMapper;
 using Coupons.Dto;
+using Coupons.DTOs.Purchases;
 using Coupons.Models;
 
 namespace SolutionVets.Utils
@@ -9,7 +10,7 @@ namespace SolutionVets.Utils
         public MappingProfile()
         {
 
-            CreateMap<CouponEntity, CouponViewUserDTO>();
+            CreateMap<CouponEntity, CouponGetDTO>();
             CreateMap<CouponEntity, CouponsDto>();
             CreateMap<CouponEntity, CouponPutDTO>().ReverseMap();
 
@@ -32,6 +33,11 @@ namespace SolutionVets.Utils
 
             CreateMap<RoleEntity, RoleGetDTO>();
             CreateMap<RoleEntity, RolePostDTO>();
+
+            CreateMap<PurchaseEntity, PurchaseGetDto>();
+            CreateMap<PurchaseEntity, PurchaseWithCouponDto>();
+
+            CreateMap<PurchaseCouponEntity, PurchaseCouponDTO>();
 
         }
     }

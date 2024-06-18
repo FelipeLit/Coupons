@@ -18,7 +18,7 @@ namespace Coupons.Models
 
         public MarketingUserEntity? MarketingUser { get; set; }
         public ICollection<CouponUsageEntity>? CouponUsages { get; set; }
-        public ICollection<PurchaseCouponEntity>? PurchaseCoupons { get; set; }
+        public ICollection<PurchaseCouponEntity>? PurchaseWithCouponsDto { get; set; }
         public ICollection<CouponHistoryEntity>? CouponHistories { get; set; }
         
     }

@@ -1,6 +1,6 @@
-namespace Coupons.Models
+namespace Coupons.DTOs.Purchases
 {
-    public class PurchaseEntity
+    public class PurchaseGetDto
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
@@ -9,8 +9,5 @@ namespace Coupons.Models
         public decimal Total { get; set; }
         public int MarketplaceUserId { get; set; }
         public int ProductId { get; set; }
-        public MarketplaceUserEntity? MarketplaceUser { get; set; } 
-        public ProductEntity? Product { get; set; }
-        public ICollection<PurchaseCouponEntity>? PurchaseCoupons { get; set; }
     }
 }
