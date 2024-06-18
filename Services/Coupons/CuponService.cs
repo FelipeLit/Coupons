@@ -57,7 +57,7 @@ namespace Coupons
         }
 
 
-        public async Task<CouponEntity> CreateCoupon(CouponsDto couponDto)
+        public async Task<CouponPutDTO> CreateCoupon(CouponPutDTO couponDto)
         {
             try
             {
@@ -69,8 +69,8 @@ namespace Coupons
                     EndDate = couponDto.EndDate,
                     DiscountType = couponDto.DiscountType,
                     IsLimited = couponDto.IsLimited,
-                    UsageLimit = couponDto.UsageLimit ?? 0,
-                    AmountUses = couponDto.AmountUses ?? 0,
+                    UsageLimit = couponDto.UsageLimit,
+                    AmountUses = couponDto.AmountUses,
                     MinPurchaseAmount = couponDto.MinPurchaseAmount,
                     MaxPurchaseAmount = couponDto.MaxPurchaseAmount,
                     Status = couponDto.Status,
@@ -84,7 +84,7 @@ namespace Coupons
                     transaction.Complete();
                 }
 
-                return coupon;
+                return _mapper.Map<CouponPutDTO>(coupon);
             }
             catch (Exception)
             {

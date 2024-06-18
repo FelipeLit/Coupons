@@ -86,12 +86,12 @@ namespace Coupons.Services.MarketplaceUsers
             }
         }
 
-        public async Task<ICollection<MarketplaceUserEntity>> GetAllMarketplaceRemove()
+        public async Task<ICollection<MarketplaceGetDTO>> GetAllMarketplaceRemove()
         {
             var marketplace = await _context.MarketplaceUsers.Where(p => p.Status == "Inactive").ToListAsync();
             if (marketplace != null)
             {
-                return marketplace;
+                return _mapper.Map<ICollection<MarketplaceGetDTO>>(marketplace);
             }
             else
             {

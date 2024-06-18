@@ -14,6 +14,8 @@ namespace Coupons.Models
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be a positive number.")]
         public decimal Price { get; set; }
 
+        public string? Status { get; set; }
+
         // CategoryId is required and should be a positive integer
         [Required(ErrorMessage = "Category ID is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Category ID must be a positive integer.")]

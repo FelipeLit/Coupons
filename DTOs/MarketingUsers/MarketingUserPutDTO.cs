@@ -17,5 +17,7 @@ namespace Coupons.Models
         [StringLength(255, ErrorMessage = "Email can't be longer than 255 characters.")]
         [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", ErrorMessage = "Invalid Email format.")]
         public string? Email { get; set; }
+
+        public string? Status { get; set; }
     }
 }

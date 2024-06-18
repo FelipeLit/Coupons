@@ -9,5 +9,7 @@ namespace Coupons.Models
         public string? DiscountType { get; set; }
         public decimal MinPurchaseAmount { get; set; }
         public decimal MaxPurchaseAmount { get; set; }
+        public string? Status { get; set; }
+
     }
 }

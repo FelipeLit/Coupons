@@ -107,7 +107,7 @@ namespace MarketplaceUsers
         }
 
         [HttpGet]
-        [Route("marketplace/delete")]
+        [Route("api/marketplace/delete")]
         public async Task<IActionResult> GetAllMarketplaceUsersRemove()
         {
             try 
@@ -125,7 +125,30 @@ namespace MarketplaceUsers
             }
         }
 
-                // This defines a GET endpoint at "api/coupon-usages".
+        // This defines a GET endpoint at "api/coupon-usages".
+        [HttpGet, Route("api/coupon-usages")]
+        public async Task<IActionResult> GetUsersWithCouponsAsync()
+        {
+            try 
+            {
+                // Call the service to get users with their coupons.
+                var coupons = await _service.GetUsersWithCoupons();
+
+                // Check if the coupons list is null or empty
+                if (coupons == null || coupons.Count == 0)
+                {
+                    // Return a 404 Not Found response with a message
+                    return NotFound(new { Message = "No coupons found in the database.", StatusCode = 404, CurrentDate = DateTime.Now });
+                }
+                // Return the result as a 200 OK response.
+                return Ok(coupons);        
+            } 
+            catch (Exception ex) 
+            {
+                // Return a 500 Internal Server Error response with a message
+                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now,  Error = ex.Message });
+            }
+        }
         
 
         // Method to obtain the marketplaceUsers created by the authenticated marketing

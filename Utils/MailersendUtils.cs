@@ -39,7 +39,7 @@ namespace Coupons.Utils
 
             var emailMessage = new Emails
             {
-                from = new From { email = "MS_W42PgZ@trial-3z0vklozo0v47qrx.mlsender.net" },
+                from = new From { email = "cuopnesFM@trial-3z0vklozo0v47qrx.mlsender.net" },
                 to = new List<To> // Usar List en lugar de array estático
                 {
                     new To { email = emailUser }

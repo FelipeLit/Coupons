@@ -18,6 +18,6 @@ namespace Coupons.Services.MarketingUsers
         Task<MarketingUserEntity> ChangeStatus(int id);
         //Restore status of marketplace Inactive to active
         Task<MarketingUserEntity> RestoreStatus(int id);
-        Task<ICollection<MarketingUserEntity>> GetAllMarketingUserRemove();
+        Task<ICollection<MarketingUserGetDTO>> GetAllMarketingUserRemove();
     }
 }
