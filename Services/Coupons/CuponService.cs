@@ -121,7 +121,7 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
                 pc.Id,
                 pc.CouponId,
                 pc.PurchaseId,
-                Purchase = new
+                Purchase = pc.Purchase != null ? new
                 {
                     pc.Purchase.Id,
                     pc.Purchase.Date,
@@ -131,7 +131,7 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
                     // Asignar valores por defecto para MarketplaceUserId y ProductId
                     MarketplaceUserId = pc.Purchase.MarketplaceUserId,
                     ProductId = pc.Purchase.ProductId
-                }
+                } : null
             })
             .ToListAsync();
 
@@ -161,7 +161,7 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
     }
     catch (Exception ex)
     {
-        throw new Exception("An error occurred while retrieving the purchased coupons. Please try again later.");
+        throw new Exception("An error occurred while retrieving the purchased coupons. Please try again later."+ex.Message);
     }
 }
 

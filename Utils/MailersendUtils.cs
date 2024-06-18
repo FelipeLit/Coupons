@@ -12,7 +12,7 @@ namespace Coupons.Utils
             string url = "https://api.mailersend.com/v1/email";
             string tokenEmail = "mlsn.615e5bfb39cbde0a574fca52d21fcd3c2a28b53d02bfb57e5e31b26a50dae228";
 
-            string htmlContentPath = @"C:\Users\da-V7\Desktop\Coupons\Template\template.html";
+            string htmlContentPath = @"C:\Users\galle\OneDrive\Escritorio\Coupons\Template\template.html";
             string htmlContent;
 
             // Verifica que el archivo existe antes de intentar leerlo

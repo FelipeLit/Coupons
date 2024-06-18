@@ -11,6 +11,6 @@ namespace Coupons.Models
         public int ProductId { get; set; }
         public MarketplaceUserEntity? MarketplaceUser { get; set; } 
         public ProductEntity? Product { get; set; }
-        public ICollection<PurchaseCouponEntity>? PurchaseCoupons { get; set; }
+        public ICollection<PurchaseCouponEntity> PurchaseCoupons { get; set; } = new List<PurchaseCouponEntity>();
     }
 }

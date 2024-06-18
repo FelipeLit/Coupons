@@ -78,17 +78,11 @@ namespace Coupons.Services.Products
             }
         }
 
-        public async Task<ICollection<ProductEntity>> GetAllProductsRemove()
+        public async Task<ICollection<ProductGetDTO>> GetAllProductsRemove()
         {
-            var products = await _context.Products.Where(p=>p.Status == "Inactive").ToListAsync();
-            if (products != null)
-            {
-                return products;
-            }
-            else 
-            {
-                return null;
-            }
+         var product = await _context.Products.Where(p => p.Status == "Inactive").ToListAsync();
+            
+            return product.Count != 0 ? _mapper.Map<ICollection<ProductGetDTO>>(product) : [];
         }
 
         public async Task<ProductEntity> RestoreStatus(int id)

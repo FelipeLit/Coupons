@@ -89,14 +89,8 @@ namespace Coupons.Services.MarketplaceUsers
         public async Task<ICollection<MarketplacePutDTO>> GetAllMarketplaceRemove()
         {
             var marketplace = await _context.MarketplaceUsers.Where(p => p.Status == "Inactive").ToListAsync();
-            if (marketplace != null)
-            {
-                return _mapper.Map<ICollection<MarketplacePutDTO>>(marketplace);
-            }
-            else
-            {
-                return null;
-            }
+            
+            return marketplace.Count != 0 ? _mapper.Map<ICollection<MarketplacePutDTO>>(marketplace) : [];
         }
 
         public async Task<MarketplaceUserEntity> RestoreStatus(int id)
