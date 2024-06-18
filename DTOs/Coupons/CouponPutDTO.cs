@@ -29,6 +29,9 @@ namespace Coupons.Models
         [Required(ErrorMessage = "Discount Type is required.")]
         [RegularExpression("^(Percentage|Net)$", ErrorMessage = "Discount Type must be 'Percentage' or 'Net'.")]
         public string? DiscountType { get; set; }
+         [Required(ErrorMessage = "Discount Amount is required.")]
+         [Range(1, int.MaxValue, ErrorMessage = "Discout amount must be a positive integer.")]
+        public int DiscountAmount { get; set; }
 
         // IsLimited is required. Should be a boolean
         [Required(ErrorMessage = "IsLimited is required.")]

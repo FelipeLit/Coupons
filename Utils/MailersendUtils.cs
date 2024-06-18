@@ -76,5 +76,50 @@ namespace Coupons.Utils
                 }
             }
         }
+
+        public async Task EnviarCorreoUser(string toEmail, string Subject, string body)
+        {
+            string url = "https://api.mailersend.com/v1/email";
+            string tokenEmail = "mlsn.615e5bfb39cbde0a574fca52d21fcd3c2a28b53d02bfb57e5e31b26a50dae228";
+
+             var emailMessage = new Emails
+            {
+                from = new From { email = "cuopnesFM@trial-3z0vklozo0v47qrx.mlsender.net" },
+                to = new List<To> // Usar List en lugar de array estático
+                {
+                    new To { email = toEmail}
+                },
+                subject = Subject,
+                text = "Bienvenido",
+                html = body
+            };
+
+             // Serializar el objeto email en formato JSON:
+            string jsonBody = JsonSerializer.Serialize(emailMessage);
+
+            using (HttpClient client = new HttpClient())
+            {
+                // Configurar el encabezado de Authorization para indicar el token de autorización
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenEmail);
+
+                // Crear el contenido de la solicitud POST como StringContent
+                StringContent stringContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                // Realizar la solicitud POST a la URL indicada
+                HttpResponseMessage response = await client.PostAsync(url, stringContent);
+
+                // Verificar si la solicitud fue exitosa (código de estado: 200 - 209)
+                if (response.IsSuccessStatusCode)
+                {
+                    // Mostrar el estado de la solicitud
+                    Console.WriteLine($"Estado de la solicitud: {response.StatusCode}");
+                }
+                else
+                {
+                    // Si la solicitud no fue exitosa, mostrar el estado de la solicitud
+                    Console.WriteLine($"Correo no enviado: {response.StatusCode}");
+                }
+            }
+        }
     }
 }

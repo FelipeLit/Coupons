@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Coupons.Dto;
+using Coupons.Models;
 using Coupons.Services.Products;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace Coupons.Controllers.Products
 
         [HttpPost]
         [Route("products")]
-        public async Task<IActionResult> Create([FromBody] ProductDto product)
+        public async Task<IActionResult> Create([FromBody] ProductPutDTO product)
         {
             try
             {

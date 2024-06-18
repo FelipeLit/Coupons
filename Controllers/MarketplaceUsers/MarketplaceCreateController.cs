@@ -26,13 +26,14 @@ namespace Coupons.Controllers.MarketplaceUsers
                     return BadRequest(ModelState);
                 }
                 var marketplaceUser = await _marketplaceUserService.CreateMarketplaceUser(marketplaceUserDto);
-                return Ok("marketplaceUser was created successfully");
+                return Ok("Marketplace user was created successfully");
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        
+
+
     }
 }
