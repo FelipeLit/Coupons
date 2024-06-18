@@ -17,7 +17,7 @@ namespace Coupons.Controllers.Coupons
         }
 
         [HttpPost]
-        [Route("coupons")]
+        [Route("api/coupons/create")]
         public async Task<IActionResult> CreateCoupon([FromBody] CouponsDto coupon)
         {
             if (!ModelState.IsValid)

@@ -12,5 +12,6 @@ namespace Coupons.Models
         [JsonIgnore]
         public ICollection<PurchaseEntity>? Purchases { get; set; }
         public CategoryEntity? Category { get; set; }
+
     }
 }
