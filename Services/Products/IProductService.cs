@@ -10,7 +10,7 @@ namespace Coupons.Services.Products
 
          
         // Asynchronous method that returns a task completed with the created product entity.
-        Task<ProductEntity> CreateProduct(ProductDto productDto);
+        Task<ProductEntity> CreateProduct(ProductPutDTO productDto);
         //Change status of product Active to Inactive
         Task<ProductEntity> ChangeStatus(int id);
         //Restore status of product Inactive to active

@@ -8,6 +8,7 @@ namespace Coupons.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string? DiscountType { get; set; }
+        public int DiscountAmount { get; set; } //agregado
         public bool? IsLimited { get; set;} // True ilimitato , False Limited
             public int UsageLimit { get; set; } // Cuantas veces de usa depende de arriba
                 public int AmountUses { get; set; } // Tipo contador de la cantidad de veces

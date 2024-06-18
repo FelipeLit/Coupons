@@ -23,7 +23,7 @@ namespace Coupons.Services.Redemptions
             _couponValidator = couponValidator;
         }
 
-        public async Task<CouponUsageRedeemDTO> RedeemCoupon(string codeCoupon, string username)
+          public async Task<CouponUsageRedeemDTO> RedeemCoupon(string codeCoupon, string username)
         {
             var validationError = await _couponValidator.ValidateRedemption(codeCoupon, username);
             if (!string.IsNullOrEmpty(validationError))

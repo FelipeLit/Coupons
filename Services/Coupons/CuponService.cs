@@ -68,6 +68,7 @@ namespace Coupons
                     StartDate = couponDto.StartDate,
                     EndDate = couponDto.EndDate,
                     DiscountType = couponDto.DiscountType,
+                    DiscountAmount = couponDto.DiscountAmount,
                     IsLimited = couponDto.IsLimited,
                     UsageLimit = couponDto.UsageLimit,
                     AmountUses = couponDto.AmountUses,

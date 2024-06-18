@@ -3,6 +3,7 @@ using AutoMapper;
 using Coupons.Data;
 using Coupons.Dto;
 using Coupons.Models;
+using Coupons.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coupons.Services.MarketplaceUsers
@@ -11,10 +12,12 @@ namespace Coupons.Services.MarketplaceUsers
     {
         private readonly CouponsContext _context;
         private readonly IMapper _mapper;
+
         public MarketplaceUserService(CouponsContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+
         }
         public async Task<ICollection<MarketplaceGetDTO>> GetAllMarketplaceUsers()
         {
@@ -63,33 +66,46 @@ namespace Coupons.Services.MarketplaceUsers
             // Return the marketplaceUser entity user DTO.
             return _mapper.Map<MarketplaceGetDTO>(marketplaceUsers);
         }
-        public async Task<MarketplaceUserEntity> CreateMarketplaceUser(MarketplaceUserDto marketplaceUserDtoDto)
+        public async Task<MarketplaceUserEntity> CreateMarketplaceUser(MarketplaceUserDto marketplaceUserDto)
         {
             try
-            {
+            {  
+                var user = await _context.MarketplaceUsers.FindAsync(marketplaceUserDto.Id);
                 var marketplaceUser = new MarketplaceUserEntity
                 {
-                    Username = marketplaceUserDtoDto.Username,
-                    Password =  marketplaceUserDtoDto.Password,
-                    Email = marketplaceUserDtoDto.Email,
-                    Status = marketplaceUserDtoDto.Status
+                    Username = marketplaceUserDto.Username,
+                    Password = marketplaceUserDto.Password,
+                    Email = marketplaceUserDto.Email,
+                    Status = marketplaceUserDto.Status
                 };
+
                 _context.MarketplaceUsers.Add(marketplaceUser);
                 await _context.SaveChangesAsync();
 
-
+                    var SendEmail = new MailersendUtils();
+                    await SendEmail.EnviarCorreoUser
+                    (
+                        "pipedrive29@gmail.com",
+                        "Bienvenido a Coupons",
+                        "Bienvenido a Coupons"
+                    );
+                
                 return marketplaceUser;
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while creating the marketplace: " + ex.Message);
+                // Registrar detalles del error
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                throw new Exception("An error occurred while creating the marketplace user.", ex);
             }
         }
+
 
         public async Task<ICollection<MarketplacePutDTO>> GetAllMarketplaceRemove()
         {
             var marketplace = await _context.MarketplaceUsers.Where(p => p.Status == "Inactive").ToListAsync();
-            
+
             return marketplace.Count != 0 ? _mapper.Map<ICollection<MarketplacePutDTO>>(marketplace) : [];
         }
 
@@ -134,12 +150,12 @@ namespace Coupons.Services.MarketplaceUsers
                 .ToListAsync();
 
             // Map the result to a collection of MarketplacePutDTO and return it.
-            return _mapper.Map<ICollection<MarketplaceUserGetCouponDTO>>(usersWithCoupons); 
+            return _mapper.Map<ICollection<MarketplaceUserGetCouponDTO>>(usersWithCoupons);
         }
 
         public async Task<bool> UpdateMarketplaceUser(int id, MarketplacePutDTO MarketplacePutDTO)
         {
-            
+
             var marketplaceUserSearch = await _context.MarketplaceUsers.FindAsync(id);
 
             // If marketplaceUser not found, return false
@@ -150,12 +166,10 @@ namespace Coupons.Services.MarketplaceUsers
 
             // Update marketplaceUser properties
             _mapper.Map(MarketplacePutDTO, marketplaceUserSearch);
-            
+
             // Save changes to the database
             await _context.SaveChangesAsync();
             return true;
         }
-
- 
     }
 }

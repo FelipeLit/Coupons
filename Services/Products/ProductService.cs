@@ -54,7 +54,7 @@ namespace Coupons.Services.Products
             }
         }
 
-        public async Task<ProductEntity> CreateProduct(ProductDto productDto)
+        public async Task<ProductEntity> CreateProduct(ProductPutDTO productDto)
         {
             try
             {
