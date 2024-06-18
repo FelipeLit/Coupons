@@ -7,7 +7,10 @@ namespace SolutionVets.Utils
     {
         public MappingProfile()
         {
-            CreateMap<CouponEntity ,CouponEntityUserDTO>();
+            CreateMap<CouponEntity, CouponForUserDTO>();
+            CreateMap<MarketplaceUserEntity, MarketplaceForUserDTO>();
+            CreateMap<MarketingUserEntity, MarketingForLoginDTO>();
+            CreateMap<CouponUsageEntity, CouponUsageForCouponsDTO>();
 
         }
     }

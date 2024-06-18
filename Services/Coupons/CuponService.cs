@@ -86,16 +86,24 @@ namespace Coupons
 
                 return coupon;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("An error occurred while creating the coupon. Please try again later.");
             }
         }
 
         // Asynchronous method to retrieve all coupons
-        public async Task<ICollection<CouponEntityUserDTO>> GetAllCoupons()
+        public async Task<ICollection<CouponForUserDTO>> GetAllCoupons()
         {
             var coupons = await _context.Coupons.ToListAsync();
+
+            // Returns a list of all coupons from the database
+            return _mapper.Map<ICollection<CouponForUserDTO>>(coupons);
+        }
+
+        public async Task<ICollection<CouponEntityUserDTO>> GetAllCouponsRemove()
+        {
+            var coupons = await _context.Coupons.Where(c=>c.Status == "Inactive").ToListAsync();
 
             // Returns a list of all coupons from the database
             return _mapper.Map<ICollection<CouponEntityUserDTO>>(coupons);
@@ -109,7 +117,7 @@ namespace Coupons
             return _mapper.Map<ICollection<CouponEntityUserDTO>>(coupons);
         }
 
-        public async Task<CouponEntityUserDTO> GetCouponById(int id)
+        public async Task<CouponForUserDTO> GetCouponById(int id)
         {
             var coupons = await _context.Coupons.FindAsync(id);
 
