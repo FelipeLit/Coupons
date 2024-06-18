@@ -58,6 +58,8 @@ CREATE TABLE UserRoles (
     FOREIGN KEY (RoleId) REFERENCES Roles(Id)
 );
 
+ALTER TABLE `Roles` ADD COLUMN Status ENUM("Active", "Inactive");
+
 -- Tabla Coupons
 CREATE TABLE Coupons (
     Id INT PRIMARY KEY AUTO_INCREMENT,

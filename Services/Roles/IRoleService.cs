@@ -10,5 +10,7 @@ namespace Coupons.Services.Roles
         Task<ICollection<RoleGetDTO>> GetRoleById(int id);
         // Asynchronous method that returns a task completed with the created(Assing) role entity.
         Task AssignRoleToUser(UserRolePostDTO request);
+        Task DenyAssignRoleToUser(UserRolePostDTO request);
+        Task<RoleEntity> CreateRole(RolePostDTO rolePostDTO);
     }
 }

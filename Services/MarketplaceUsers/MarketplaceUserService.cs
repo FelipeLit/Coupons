@@ -86,12 +86,12 @@ namespace Coupons.Services.MarketplaceUsers
             }
         }
 
-        public async Task<ICollection<MarketplaceGetDTO>> GetAllMarketplaceRemove()
+        public async Task<ICollection<MarketplacePutDTO>> GetAllMarketplaceRemove()
         {
             var marketplace = await _context.MarketplaceUsers.Where(p => p.Status == "Inactive").ToListAsync();
             if (marketplace != null)
             {
-                return _mapper.Map<ICollection<MarketplaceGetDTO>>(marketplace);
+                return _mapper.Map<ICollection<MarketplacePutDTO>>(marketplace);
             }
             else
             {
@@ -139,11 +139,11 @@ namespace Coupons.Services.MarketplaceUsers
                 .ThenInclude(cu => cu.Coupon!)
                 .ToListAsync();
 
-            // Map the result to a collection of MarketplaceGetDTO and return it.
+            // Map the result to a collection of MarketplacePutDTO and return it.
             return _mapper.Map<ICollection<MarketplaceUserGetCouponDTO>>(usersWithCoupons); 
         }
 
-        public async Task<bool> UpdateMarketplaceUser(int id, MarketplaceGetDTO MarketplaceGetDTO)
+        public async Task<bool> UpdateMarketplaceUser(int id, MarketplacePutDTO MarketplacePutDTO)
         {
             
             var marketplaceUserSearch = await _context.MarketplaceUsers.FindAsync(id);
@@ -155,7 +155,7 @@ namespace Coupons.Services.MarketplaceUsers
             }
 
             // Update marketplaceUser properties
-            _mapper.Map(MarketplaceGetDTO, marketplaceUserSearch);
+            _mapper.Map(MarketplacePutDTO, marketplaceUserSearch);
             
             // Save changes to the database
             await _context.SaveChangesAsync();

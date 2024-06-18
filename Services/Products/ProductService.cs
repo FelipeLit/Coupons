@@ -7,11 +7,6 @@ using Coupons.Dto;
 using Coupons.Models;
 using Microsoft.EntityFrameworkCore;
 
-using AutoMapper;
-using Coupons.Data;
-using Coupons.Models;
-using Microsoft.EntityFrameworkCore;
-
 namespace Coupons.Services.Products
 {
     public class ProductService : IProductService

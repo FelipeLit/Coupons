@@ -28,7 +28,9 @@ namespace Coupons.Dto
         public decimal MinPurchaseAmount { get; set; }
         [Required]
         public decimal MaxPurchaseAmount { get; set; }
-        [Required]
+        // Status is required. Can be "Active" or "Inactive"
+        [Required(ErrorMessage = "Status Type is required.")]
+        [RegularExpression("^(Active|Inactive)$", ErrorMessage = "Status must be 'Active' or 'Inactive'.")]
         public string? Status { get; set; }
         [Required]
         public int MarketingUserId { get; set; }

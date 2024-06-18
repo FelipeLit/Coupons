@@ -14,6 +14,9 @@ namespace Coupons.Models
         public int AmountUses { get; set; }
         public decimal MinPurchaseAmount { get; set; }
         public decimal MaxPurchaseAmount { get; set; }
+        // Status is required. Can be "Active" or "Inactive"
+        [Required(ErrorMessage = "Status Type is required.")]
+        [RegularExpression("^(Active|Inactive)$", ErrorMessage = "Status must be 'Active' or 'Inactive'.")]
         public string? Status { get; set; }
         public ICollection<CouponUsageGetDTO>? CouponUsages { get; set; }
     }

@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Coupons.Controllers.MarketingUsers
 {
-    public class MArketinUserDelete : ControllerBase
+    public class MarketingUserDeleteController : ControllerBase
     {
         private readonly IMarketingUserService _marketingUserService;
-        public MArketinUserDelete(IMarketingUserService marketingUserService)
+        public MarketingUserDeleteController(IMarketingUserService marketingUserService)
         {
             _marketingUserService = marketingUserService;
         }

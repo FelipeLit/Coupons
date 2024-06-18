@@ -20,7 +20,7 @@ namespace MarketplaceUsers
         [Authorize(Roles = "Marketplace")]
         // Endpoint to update a marketplaceUser
         [HttpPut("api/marketplace-users/update/{id}")]
-        public async Task<IActionResult> UpdateMarketplaceUser(int id, [FromBody] MarketplaceGetDTO MarketplaceGetDTO)
+        public async Task<IActionResult> UpdateMarketplaceUser(int id, [FromBody] MarketplacePutDTO MarketplacePutDTO)
         {
             // Validate that the model is valid
             if (!ModelState.IsValid)
@@ -52,7 +52,7 @@ namespace MarketplaceUsers
                 }
 
                 // Try to update the marketplaceUser
-                var result = await _service.UpdateMarketplaceUser(id, MarketplaceGetDTO);
+                var result = await _service.UpdateMarketplaceUser(id, MarketplacePutDTO);
                 
                 if (!result)
                 {

@@ -13,5 +13,10 @@ namespace Coupons.Models
         [Required(ErrorMessage = "Role ID is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Role ID must be a positive integer.")]
         public int RoleId { get; set; }
+
+        // Status is required. Can be "Active" or "Inactive"
+        [Required(ErrorMessage = "Status Type is required.")]
+        [RegularExpression("^(Active|Inactive)$", ErrorMessage = "Status must be 'Active' or 'Inactive'.")]
+        public string? Status { get; set; }
     }
 }

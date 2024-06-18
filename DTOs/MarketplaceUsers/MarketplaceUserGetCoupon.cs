@@ -18,6 +18,9 @@ namespace Coupons.Models
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be between 8 and 100 characters.")]
         public string? Password { get; set; }
+        // Status is required. Can be "Active" or "Inactive"
+        [Required(ErrorMessage = "Status Type is required.")]
+        [RegularExpression("^(Active|Inactive)$", ErrorMessage = "Status must be 'Active' or 'Inactive'.")]
         public string? Status { get; set; }
 
         // Email is required and should be in a valid email format

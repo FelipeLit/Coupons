@@ -54,9 +54,9 @@ namespace Coupons.Models
         [Range(0.01, double.MaxValue, ErrorMessage = "Maximum Purchase Amount must be greater than zero.")]
         public decimal MaxPurchaseAmount { get; set; }
 
-        // Status is required. Can be "Inactive" or "Active"
-        [Required(ErrorMessage = "Status is required.")]
-        [RegularExpression("^(Inactive|Active)$", ErrorMessage = "Status must be 'Inactive' or 'Active'.")]
+        // Status is required. Can be "Active" or "Inactive"
+        [Required(ErrorMessage = "Status Type is required.")]
+        [RegularExpression("^(Active|Inactive)$", ErrorMessage = "Status must be 'Active' or 'Inactive'.")]
         public string? Status { get; set; }
 
         // MarketingUserId is required. Should be a positive integer

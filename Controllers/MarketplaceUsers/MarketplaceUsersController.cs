@@ -16,7 +16,8 @@ namespace MarketplaceUsers
             _service = service;
         }
         
-        [Authorize(Roles = "Admin, Marketing")]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Marketing")]
         // Endpoint to get all marketplaceUsers
         [HttpGet, Route("api/marketplace-users")]
         public async Task<IActionResult> GetAllMarketplaceUsers()
