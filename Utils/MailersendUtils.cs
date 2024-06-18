@@ -7,7 +7,7 @@ namespace Coupons.Utils
 {
     public class MailersendUtils
     {
-        public async Task EnviarCorreo(string marketingUserName, string emailUser, string Username, string CouponName, string CouponDescription, DateTime UseDate, string ProductName, decimal Discount, decimal Total)
+        public async Task EnviarCorreo(string marketingUserName, string emailUser, string Username, string CouponName, string CouponDescription, DateTime UseDate, string ProductName,decimal ProductPrice, decimal Discount, decimal Total)
         {
             string url = "https://api.mailersend.com/v1/email";
             string tokenEmail = "mlsn.615e5bfb39cbde0a574fca52d21fcd3c2a28b53d02bfb57e5e31b26a50dae228";
@@ -33,6 +33,7 @@ namespace Coupons.Utils
                                      .Replace("##UseDate##", UseDate.ToString("yyyy-MM-dd"))
                                      .Replace("##ProductName##", ProductName)
                                      .Replace("##Discount##", Discount.ToString("F2"))
+                                     .Replace("##ProductPrice##", ProductPrice.ToString("F2"))
                                      .Replace("##marketingUserName##", marketingUserName)
                                      .Replace("##Total##", Total.ToString("F2"));
 

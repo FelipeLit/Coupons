@@ -75,7 +75,35 @@ namespace Coupons.Services.Redemptions
             _context.CouponUsages.Add(newCouponUsage);
             await _context.SaveChangesAsync();
 
+
+
             var mapCoupon = _mapper.Map<CouponUsageRedeemDTO>(newCouponUsage);
+
+            
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == purchase.ProductId);
+            decimal Discount = 0;
+            // validar tipo descuento
+            if (coupon.DiscountType == "Net")
+            {
+                Discount = (int)(product.Price - coupon.DiscountAmount);
+            }
+            else if (coupon.DiscountType == "Percentage")
+            {
+                Discount = product.Price -(product.Price * coupon.DiscountAmount / 100);
+            }
+            var newPrice = product.Price - Discount;
+
+            var newPurchase = new PurchaseEntity
+            {
+                MarketplaceUserId = marketplace.Id,
+                ProductId = product.Id,
+                Date = DateTime.UtcNow,
+                Amount = product.Price,
+                Discount = Discount,
+                Total = newPrice  
+            };
+            _context.Purchases.Add(newPurchase);
+            await _context.SaveChangesAsync();
 
             var SendEmail = new MailersendUtils();
             await SendEmail.EnviarCorreo(
@@ -86,8 +114,9 @@ namespace Coupons.Services.Redemptions
                 coupon.Description ?? "No description available",
                 newCouponUsage.UseDate,
                 productName,
-                purchase.Discount,
-                purchase.Total
+                product.Price,
+                Discount,
+                newPrice
             );
 
             return mapCoupon;
