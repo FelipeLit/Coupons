@@ -143,14 +143,25 @@ namespace Coupons.Services.MarketplaceUsers
             return _mapper.Map<ICollection<MarketplaceUserGetCouponDTO>>(usersWithCoupons); 
         }
 
-        public Task<bool> UpdateMarketplaceUser(int id, MarketplaceGetDTO MarketplaceGetDTO)
+        public async Task<bool> UpdateMarketplaceUser(int id, MarketplaceGetDTO MarketplaceGetDTO)
         {
-            throw new NotImplementedException();
+            
+            var marketplaceUserSearch = await _context.MarketplaceUsers.FindAsync(id);
+
+            // If marketplaceUser not found, return false
+            if (marketplaceUserSearch == null)
+            {
+                return false;
+            }
+
+            // Update marketplaceUser properties
+            _mapper.Map(MarketplaceGetDTO, marketplaceUserSearch);
+            
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<bool> UpdateMarketplaceUser(int id, CouponGetMarkertplaceDTO marketplaceUserForUserDTO)
-        {
-            throw new NotImplementedException();
-        }
+ 
     }
 }

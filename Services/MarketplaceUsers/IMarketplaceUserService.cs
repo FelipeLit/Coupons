@@ -13,9 +13,9 @@ namespace Coupons.Services.MarketplaceUsers
         Task<bool> UpdateMarketplaceUser(int id, MarketplaceGetDTO MarketplaceGetDTO);
         // This is an interface method declaration for getting users with their coupons.
         Task<ICollection<MarketplaceUserGetCouponDTO>> GetUsersWithCoupons();    
-        Task<bool> UpdateMarketplaceUser(int id, CouponGetMarkertplaceDTO  marketplaceUserForUserDTO);
+
         // Asynchronous method that returns a task completed with the created marketplace entity.
-        //Task<MarketplaceUserEntity> CreateMarketplaceUser(MarketplaceUserDto marketplaceUserDtoDto);
+        Task<MarketplaceUserEntity> CreateMarketplaceUser(MarketplaceUserDto marketplaceUserDtoDto);
         //Change status of marketplace Active to Inactive
         Task<MarketplaceUserEntity> ChangeStatus(int id);
         //Restore status of marketplace Inactive to active

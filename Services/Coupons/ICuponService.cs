@@ -34,9 +34,6 @@ namespace Coupons
         //PURCHASECOUPONS see all buys and coupons asociate
         Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased();
 
-        Task<ICollection<CouponGetMarkertplaceDTO >> GetUsersWithCouponsAsync();    
-        
-        // This is an interface method declaration for getting users with their coupons.
-        Task<ICollection<CouponGetMarkertplaceDTO >> GetUsersWithCoupons();    
+    
     }
 }

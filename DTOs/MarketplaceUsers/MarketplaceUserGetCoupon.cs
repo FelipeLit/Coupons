@@ -18,6 +18,7 @@ namespace Coupons.Models
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be between 8 and 100 characters.")]
         public string? Password { get; set; }
+        public string? Status { get; set; }
 
         // Email is required and should be in a valid email format
         [Required(ErrorMessage = "Email is required.")]

@@ -244,16 +244,6 @@ public async Task<ICollection<PurchaseCouponEntity>> GetAllCouponsPurchased()
             }
         }
 
-        public Task<ICollection<CouponGetMarkertplaceDTO>> GetUsersWithCouponsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ICollection<CouponGetMarkertplaceDTO>> GetUsersWithCoupons()
-        {
-            throw new NotImplementedException();
-        }
-
         // Task<ICollection<MarketplaceUserForUserDTO>> ICouponService.GetUsersWithCouponsAsync()
         // {
         //     throw new NotImplementedException();
