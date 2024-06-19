@@ -122,6 +122,26 @@ namespace Coupons
             }
         }
 
+        [HttpGet]
+        [Route("coupons/history")]
+        public async Task<IActionResult> GetAllCouponsHistory()
+        {
+            try
+            {
+                var coupons = await _service.GetAllCouponHistory();
+                if (coupons == null || coupons.Count == 0)
+                {
+                    return NotFound(new { Message = "404 No coupons found in the database." , currentDate = DateTime.Now});
+                }   
+                return Ok(coupons);
+            }
+            catch (Exception ex)
+            {
+                // Return a 500 Internal Server Error response with a message
+                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now, error =ex.Message });
+            }
+        }
+
         // Method to obtain the coupons created by the authenticated marketing
         // [HttpGet, Route("api/mycoupons")]
         // public IActionResult GetMyCoupons()
