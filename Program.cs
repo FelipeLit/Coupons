@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Coupons;
 using Coupons.Services.Redemptions;
 using Coupons.Services.Validations;
+using Coupons.Services.Slack;
 
 
 // We create a WebApplicationBuilder object, which will help us configure and build our web application
@@ -32,6 +33,11 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//configuration Slack
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton(sp=>new SlackService(
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient(),builder.Configuration["Slack:WebhookUrl"]));
 
 // dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection 
 builder.Services.AddAutoMapper(typeof(Program));

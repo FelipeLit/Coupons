@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Coupons.Services.Slack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +9,13 @@ namespace Coupons
     {
         // Declare a read-only variable for the coupon service
         private readonly ICouponService _service;
+        private readonly SlackService _slackService;
 
         // Constructor that receives the coupon service as a parameter
-        public CouponController(ICouponService service)
+        public CouponController(ICouponService service,SlackService slackService)
         {
             _service = service;
+            _slackService = slackService;
         }
         
         [Authorize(Roles = "Marketing")]
@@ -117,6 +120,7 @@ namespace Coupons
             } 
             catch (Exception ex) 
             {
+                await _slackService.SlackNotifier(ex.Message);
                 // Return a 500 Internal Server Error response with a message
                 return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now, error =ex.Message });
             }
@@ -137,8 +141,23 @@ namespace Coupons
             }
             catch (Exception ex)
             {
+                 await _slackService.SlackNotifier(ex.Message);
                 // Return a 500 Internal Server Error response with a message
                 return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now, error =ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("api/sendmessage")]
+        public async Task<IActionResult> SendMessage()
+        {
+            try{
+                throw new Exception("Error controlado");
+            }
+            catch (Exception ex)
+            {
+                await _slackService.SlackNotifier(ex.Message);
+                return StatusCode (500, "Error");
             }
         }
 
