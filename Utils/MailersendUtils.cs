@@ -7,35 +7,12 @@ namespace Coupons.Utils
 {
     public class MailersendUtils
     {
-        public async Task EnviarCorreo(string marketingUserName, string emailUser, string Username, string CouponName, string CouponDescription, DateTime UseDate, string ProductName, decimal Discount, decimal Total)
+        public async Task EnviarCorreo(string marketingUserName, string emailUser, string Username, string CouponName, string CouponDescription, DateTime UseDate, string ProductName, decimal Discount, decimal Total, string Path)
         {
             string url = "https://api.mailersend.com/v1/email";
             string tokenEmail = "mlsn.615e5bfb39cbde0a574fca52d21fcd3c2a28b53d02bfb57e5e31b26a50dae228";
 
-            string htmlContentPath = @"C:\Users\galle\OneDrive\Escritorio\Coupons\Template\template.html";
-            string htmlContent;
-
-            // Verifica que el archivo existe antes de intentar leerlo
-            if (File.Exists(htmlContentPath))
-            {
-                htmlContent = File.ReadAllText(htmlContentPath, Encoding.UTF8);
-            }
-            else
-            {
-                Console.WriteLine($"El archivo {htmlContentPath} no existe.");
-                return;
-            }
-
-            // Reemplazar marcadores en el HTML
-            htmlContent = htmlContent.Replace("##Username##", Username)
-                                     .Replace("##CouponName##", CouponName)
-                                     .Replace("##CouponDescription##", CouponDescription)
-                                     .Replace("##UseDate##", UseDate.ToString("yyyy-MM-dd"))
-                                     .Replace("##ProductName##", ProductName)
-                                     .Replace("##Discount##", Discount.ToString("F2"))
-                                     .Replace("##marketingUserName##", marketingUserName)
-                                     .Replace("##Total##", Total.ToString("F2"));
-
+            
 
             var emailMessage = new Emails
             {
@@ -46,7 +23,7 @@ namespace Coupons.Utils
                 },
                 subject = "¡Felicidades! Tu cupón ha sido redimido correctamente",
                 text = "Felicitaciones, has redimido tu cupón correctamente. Por favor, revisa los detalles en el correo.",
-                html = htmlContent
+                html = Path
             };
 
             // Serializar el objeto email en formato JSON:
@@ -77,10 +54,28 @@ namespace Coupons.Utils
             }
         }
 
-        public async Task EnviarCorreoUser(string toEmail, string Subject, string body)
+        public async Task EnviarCorreoUser(string toEmail, string userMarketplace, string userMarketing)
         {
             string url = "https://api.mailersend.com/v1/email";
             string tokenEmail = "mlsn.615e5bfb39cbde0a574fca52d21fcd3c2a28b53d02bfb57e5e31b26a50dae228";
+            string htmlContentPath = @"C:\Users\da-V7\Desktop\Coupons\Template\templateConfirrmed.html";
+            string htmlContent;
+
+            // Verifica que el archivo existe antes de intentar leerlo
+            if (File.Exists(htmlContentPath))
+            {
+                htmlContent = File.ReadAllText(htmlContentPath, Encoding.UTF8);
+            }
+            else
+            {
+                Console.WriteLine($"El archivo {htmlContentPath} no existe.");
+                return;
+            }
+
+            // Reemplazar marcadores en el HTML
+            htmlContent = htmlContent.Replace("##userMarketplace##", userMarketplace)
+                                     .Replace("##userMarketing##", userMarketing);
+
 
              var emailMessage = new Emails
             {
@@ -89,9 +84,9 @@ namespace Coupons.Utils
                 {
                     new To { email = toEmail}
                 },
-                subject = Subject,
-                text = "Bienvenido",
-                html = body
+                subject = "Register Comfirmation",
+                text = "Register Comfirmation",
+                html = htmlContent
             };
 
              // Serializar el objeto email en formato JSON:

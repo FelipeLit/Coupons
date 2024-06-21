@@ -78,21 +78,27 @@ namespace Coupons.Services.MarketplaceUsers
                     Status = marketplaceUserDto.Status
                 };
 
+                var MarketingUserName = _context.MarketingUsers.FirstOrDefault(c => c.Id == 3);
+                if (MarketingUserName == null)
+                {
+                    throw new ValidationException("The ID marketing user not found.");
+                }
+
                 _context.MarketplaceUsers.Add(marketplaceUser);
                 await _context.SaveChangesAsync();
 
-                    var SendEmail = new MailersendUtils();
+                var SendEmail = new MailersendUtils();
 
-                    if(SendEmail == null){
-                        throw new ValidationException("Error al enviar el correo");
-                    }
+                if(SendEmail == null){
+                    throw new ValidationException("Error al enviar el correo");
+                }
 
-                    await SendEmail.EnviarCorreoUser
-                    ( 
-                        marketplaceUserDto.Email,
-                        $"Bienvenido a Coupons",
-                        "Bienvenido a Coupons"
-                    );
+                await SendEmail.EnviarCorreoUser
+                ( 
+                    marketplaceUserDto.Email,
+                    marketplaceUserDto.Username,
+                    MarketingUserName.Username
+                );
                 
                 return marketplaceUser;
             }

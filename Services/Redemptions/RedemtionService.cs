@@ -1,3 +1,5 @@
+
+
 using AutoMapper;
 using Coupons.Data;
 using Coupons.Models;
@@ -76,7 +78,7 @@ namespace Coupons.Services.Redemptions
             await _context.SaveChangesAsync();
 
             var mapCoupon = _mapper.Map<CouponUsageRedeemDTO>(newCouponUsage);
-
+    
             var SendEmail = new MailersendUtils();
             await SendEmail.EnviarCorreo(
                 marketingUserName,
@@ -87,7 +89,9 @@ namespace Coupons.Services.Redemptions
                 newCouponUsage.UseDate,
                 productName,
                 purchase.Discount,
-                purchase.Total
+                purchase.Total,
+                @"C:\Users\da-V7\Desktop\Coupons\Template\template.html"
+
             );
 
             return mapCoupon;
