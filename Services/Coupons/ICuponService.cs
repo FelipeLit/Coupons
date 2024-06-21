@@ -23,6 +23,8 @@ namespace Coupons
         // Asynchronous method that returns a task completed with the list of coupons created by a certain user (CUPONES CREADOS POR UNO DE MARKETING).
         Task<ICollection<CouponPutDTO>> GetCreatedCoupons(int marketplaceId);
 
+        Task<ICollection<CouponHistoryEntity>> GetAllCouponHistory();
+
 
         //Change status of coupon Active to Inactive
         Task<CouponEntity> ChangeStatus(int id);

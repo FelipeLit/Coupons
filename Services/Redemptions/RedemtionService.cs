@@ -77,8 +77,10 @@ namespace Coupons.Services.Redemptions
             _context.CouponUsages.Add(newCouponUsage);
             await _context.SaveChangesAsync();
 
+
+
             var mapCoupon = _mapper.Map<CouponUsageRedeemDTO>(newCouponUsage);
-    
+
             var SendEmail = new MailersendUtils();
             await SendEmail.EnviarCorreo(
                 marketingUserName,
