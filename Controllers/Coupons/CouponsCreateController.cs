@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Coupons.Dto;
+using Coupons.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coupons.Controllers.Coupons
@@ -18,7 +19,7 @@ namespace Coupons.Controllers.Coupons
 
         [HttpPost]
         [Route("api/coupons/create")]
-        public async Task<IActionResult> CreateCoupon([FromBody] CouponsDto coupon)
+        public async Task<IActionResult> CreateCoupon([FromBody] CouponPutDTO coupon)
         {
             if (!ModelState.IsValid)
             {

@@ -45,23 +45,23 @@ namespace Coupons.Services.Roles
 
         public async Task AssignRoleToUser(UserRolePostDTO request)
         {
-            var marketing = _context.MarketingUsers.Any(mk => mk.Id == request.MarketingUserId);
-            var role = _context.Roles.Any(r => r.Id == request.RoleId);
-            var userRole = _context.UserRoles.Any(r => r.MarketingUserId == request.MarketingUserId && r.RoleId == request.RoleId);;
+            var userRole = await _context.UserRoles.AnyAsync(r => r.MarketingUserId == request.MarketingUserId && r.RoleId == request.RoleId);;
 
             if(userRole)
             {
                 throw new Exception("This marketing user already exists with the same role in the database.");
             }
 
-            if (!marketing)
+            var marketing = await _context.MarketingUsers.FirstOrDefaultAsync(mk => mk.Id == request.MarketingUserId) ?? throw new Exception("Cannot find marketing user with ID: " + request.MarketingUserId);
+            if (marketing.Status == "Inactive")
             {
-                throw new Exception("Cannot find marketing user with ID: " + request.MarketingUserId);
+                throw new Exception("This marketing user cannot be assigned a role, as the marketing user is inactive");
             }
 
-            if (!role)
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == request.RoleId) ?? throw new Exception("Cannot find role with ID: " + request.RoleId);
+            if (role.Status == "Inactive")
             {
-                throw new Exception("Cannot find role with ID: " + request.RoleId);
+                throw new Exception($"This role cannot be assigned to a marketing user, as the role is inactive");
             }
             
             // Map the UserRolePostDTO to the UserRole entity
@@ -74,5 +74,53 @@ namespace Coupons.Services.Roles
             await _context.SaveChangesAsync();
         }
 
+        public async Task DenyAssignRoleToUser(UserRolePostDTO request)
+        {
+            var userRole = await _context.UserRoles.FirstOrDefaultAsync(r => r.MarketingUserId == request.MarketingUserId && r.RoleId == request.RoleId);;
+
+            if(userRole == null)
+            {
+                throw new Exception("There is no marketing user with this role.");
+            }
+            var marketing = await _context.MarketingUsers.AnyAsync(mk => mk.Id == request.MarketingUserId);
+
+            if (!marketing)
+            {
+                throw new Exception("Cannot find marketing user with ID: " + request.MarketingUserId);
+            }
+
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == request.RoleId) ?? throw new Exception("Cannot find role with ID: " + request.RoleId);
+
+
+            // Add the UserRole entity to the context
+            _context.UserRoles.Remove(userRole);
+
+            // Save the changes to the database
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<RoleEntity> CreateRole(RolePostDTO rolePostDTO)
+        {
+            try
+            {
+                var Role = new RoleEntity
+                {
+                    Name = rolePostDTO.Name,
+                    Status = rolePostDTO.Status,
+          
+                };
+
+                
+                _context.Roles.Add(Role);
+                await _context.SaveChangesAsync();
+
+
+                return Role;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while creating the product: " + ex.Message);
+            }
+        }
     }
 }

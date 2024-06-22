@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Coupons.Controllers.PurchaseCoupons
+namespace Coupons.Controllers.PurchaseWithCouponsDto
 {
-    public class PurchaseCouponsController : ControllerBase
+    public class PurchaseWithCouponsDtoController : ControllerBase
     {
         private readonly ICouponService _couponService;
-        public PurchaseCouponsController(ICouponService couponService)
+        public PurchaseWithCouponsDtoController(ICouponService couponService)
         {
             _couponService = couponService;
         }

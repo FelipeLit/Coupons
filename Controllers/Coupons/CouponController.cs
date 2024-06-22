@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Coupons.Services.Slack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +9,13 @@ namespace Coupons
     {
         // Declare a read-only variable for the coupon service
         private readonly ICouponService _service;
+        private readonly SlackService _slackService;
 
         // Constructor that receives the coupon service as a parameter
-        public CouponController(ICouponService service)
+        public CouponController(ICouponService service,SlackService slackService)
         {
             _service = service;
+            _slackService = slackService;
         }
         
         [Authorize(Roles = "Marketing")]
@@ -97,8 +100,6 @@ namespace Coupons
 
                 return Ok(coupon);
             }
-<<<<<<< HEAD
-=======
             catch (Exception) 
             {
                 return BadRequest(new { Message = "500 Internal Server Error", currentDate = DateTime.Now});
@@ -117,10 +118,46 @@ namespace Coupons
                 }   
                 return Ok(coupons);
             } 
-            catch (Exception) 
+            catch (Exception ex) 
             {
+                await _slackService.SlackNotifier(ex.Message);
                 // Return a 500 Internal Server Error response with a message
-                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now });
+                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now, error =ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("coupons/history")]
+        public async Task<IActionResult> GetAllCouponsHistory()
+        {
+            try
+            {
+                var coupons = await _service.GetAllCouponHistory();
+                if (coupons == null || coupons.Count == 0)
+                {
+                    return NotFound(new { Message = "404 No coupons found in the database." , currentDate = DateTime.Now});
+                }   
+                return Ok(coupons);
+            }
+            catch (Exception ex)
+            {
+                 await _slackService.SlackNotifier(ex.Message);
+                // Return a 500 Internal Server Error response with a message
+                return BadRequest(new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now, error =ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("api/sendmessage")]
+        public async Task<IActionResult> SendMessage()
+        {
+            try{
+                throw new Exception("Error controlado");
+            }
+            catch (Exception ex)
+            {
+                await _slackService.SlackNotifier(ex.Message);
+                return StatusCode (500, "Error");
             }
         }
 
@@ -141,29 +178,6 @@ namespace Coupons
         // }
 
         // This defines a GET endpoint at "api/coupon-usages".
-        [HttpGet, Route("api/coupon-usages")]
-        public async Task<IActionResult> GetUsersWithCouponsAsync()
-        {
-            try 
-            {
-                // Call the service to get users with their coupons.
-                var coupons = await _service.GetUsersWithCoupons();
-
-                // Check if the coupons list is null or empty
-                if (coupons == null || coupons.Count == 0)
-                {
-                    // Return a 404 Not Found response with a message
-                    return NotFound(new { Message = "No coupons found in the database.", StatusCode = 404, CurrentDate = DateTime.Now });
-                }
-                // Return the result as a 200 OK response.
-                return Ok(coupons);        
-            } 
->>>>>>> c6624d9e34ff8d502155952230bafbcba3745d41
-            catch (Exception ex) 
-            {
-                // Return a 500 Internal Server Error response with a message
-                return StatusCode(500, new { Message = "Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now, Error = ex.Message });
-            }
-        }
+        
     }
 }

@@ -10,7 +10,6 @@ namespace Coupons.Models
         
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters.")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,100}$", ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.")]
         public string? Password { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
@@ -18,5 +17,10 @@ namespace Coupons.Models
         [StringLength(255, ErrorMessage = "Email can't be longer than 255 characters.")]
         [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", ErrorMessage = "Invalid Email format.")]
         public string? Email { get; set; }
+
+        // Status is required. Can be "Active" or "Inactive"
+        [Required(ErrorMessage = "Status Type is required.")]
+        [RegularExpression("^(Active|Inactive)$", ErrorMessage = "Status must be 'Active' or 'Inactive'.")]
+        public string? Status { get; set; }
     }
 }

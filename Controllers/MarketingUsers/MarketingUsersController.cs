@@ -106,6 +106,25 @@ namespace MarketingUsers
                 return BadRequest(new { Message = " Internal Server Error", StatusCode = 500, CurrentDate = DateTime.Now });
             }
         }
+        [HttpGet]
+        // [Authorize(Roles = "Admin")]
+        [Route("marketingusers/remove")]
+        public async Task<IActionResult> GetAllMarketingUserRemove()
+        {
+            try 
+            {
+                var marketinguser = await _service.GetAllMarketingUserRemove();
+                if (marketinguser == null || marketinguser.Count == 0)
+                {
+                    return NotFound(new { Message = "404 No marketinguser found in the database." , currentDate = DateTime.Now});
+                }   
+                return Ok(marketinguser);
+            } 
+            catch (Exception) 
+            {
+                return BadRequest(new { Message = "500 Internal Server Error", currentDate = DateTime.Now});
+            }
+        }
 
     }
 }

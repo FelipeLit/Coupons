@@ -3,6 +3,7 @@ using AutoMapper;
 using Coupons.Data;
 using Coupons.Dto;
 using Coupons.Models;
+using Coupons.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coupons.Services.MarketplaceUsers
@@ -11,10 +12,12 @@ namespace Coupons.Services.MarketplaceUsers
     {
         private readonly CouponsContext _context;
         private readonly IMapper _mapper;
+
         public MarketplaceUserService(CouponsContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+
         }
         public async Task<ICollection<MarketplaceGetDTO>> GetAllMarketplaceUsers()
         {
@@ -63,40 +66,57 @@ namespace Coupons.Services.MarketplaceUsers
             // Return the marketplaceUser entity user DTO.
             return _mapper.Map<MarketplaceGetDTO>(marketplaceUsers);
         }
-        public async Task<MarketplaceUserEntity> CreateMarketplaceUser(MarketplaceUserDto marketplaceUserDtoDto)
+        public async Task<MarketplaceUserEntity> CreateMarketplaceUser(MarketplaceUserDto marketplaceUserDto)
         {
             try
-            {
+            {  
                 var marketplaceUser = new MarketplaceUserEntity
                 {
-                    Username = marketplaceUserDtoDto.Username,
-                    Password =  marketplaceUserDtoDto.Password,
-                    Email = marketplaceUserDtoDto.Email,
-                    Status = marketplaceUserDtoDto.Status
+                    Username = marketplaceUserDto.Username,
+                    Password = marketplaceUserDto.Password,
+                    Email = marketplaceUserDto.Email,
+                    Status = marketplaceUserDto.Status
                 };
+
+                var MarketingUserName = _context.MarketingUsers.FirstOrDefault(c => c.Id == 3);
+                if (MarketingUserName == null)
+                {
+                    throw new ValidationException("The ID marketing user not found.");
+                }
+
                 _context.MarketplaceUsers.Add(marketplaceUser);
                 await _context.SaveChangesAsync();
 
+                var SendEmail = new MailersendUtils();
 
+                if(SendEmail == null){
+                    throw new ValidationException("Error al enviar el correo");
+                }
+
+                await SendEmail.EnviarCorreoUser
+                ( 
+                    marketplaceUserDto.Email,
+                    marketplaceUserDto.Username,
+                    MarketingUserName.Username
+                );
+                
                 return marketplaceUser;
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while creating the marketplace: " + ex.Message);
+                // Registrar detalles del error
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                throw new Exception("An error occurred while creating the marketplace user.", ex);
             }
         }
 
-        public async Task<ICollection<MarketplaceUserEntity>> GetAllMarketplaceRemove()
+
+        public async Task<ICollection<MarketplacePutDTO>> GetAllMarketplaceRemove()
         {
             var marketplace = await _context.MarketplaceUsers.Where(p => p.Status == "Inactive").ToListAsync();
-            if (marketplace != null)
-            {
-                return marketplace;
-            }
-            else
-            {
-                return null;
-            }
+
+            return marketplace.Count != 0 ? _mapper.Map<ICollection<MarketplacePutDTO>>(marketplace) : [];
         }
 
         public async Task<MarketplaceUserEntity> RestoreStatus(int id)
@@ -139,18 +159,27 @@ namespace Coupons.Services.MarketplaceUsers
                 .ThenInclude(cu => cu.Coupon!)
                 .ToListAsync();
 
-            // Map the result to a collection of MarketplaceGetDTO and return it.
-            return _mapper.Map<ICollection<MarketplaceUserGetCouponDTO>>(usersWithCoupons); 
+            // Map the result to a collection of MarketplacePutDTO and return it.
+            return _mapper.Map<ICollection<MarketplaceUserGetCouponDTO>>(usersWithCoupons);
         }
 
-        public Task<bool> UpdateMarketplaceUser(int id, MarketplaceGetDTO MarketplaceGetDTO)
+        public async Task<bool> UpdateMarketplaceUser(int id, MarketplacePutDTO MarketplacePutDTO)
         {
-            throw new NotImplementedException();
-        }
 
-        public Task<bool> UpdateMarketplaceUser(int id, CouponGetMarkertplaceDTO marketplaceUserForUserDTO)
-        {
-            throw new NotImplementedException();
+            var marketplaceUserSearch = await _context.MarketplaceUsers.FindAsync(id);
+
+            // If marketplaceUser not found, return false
+            if (marketplaceUserSearch == null)
+            {
+                return false;
+            }
+
+            // Update marketplaceUser properties
+            _mapper.Map(MarketplacePutDTO, marketplaceUserSearch);
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
